@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="./index.js"></script>
+    <title>Document</title>
+</head>
+<style>
+        .container
+    {
+        display: flex;
+    }
+
+    button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #1d1d1d;
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        
+        text-align: center;
+        text-decoration: none;
+        border-top-left-radius: 10px ;
+        border-bottom-right-radius: 10px;
+    }
+    .container > *
+    {
+        margin-left: 10px;
+        
+    }
+
+    .left {
+        flex: 2;
+        padding: 20px;
+    }
+
+    .right {
+        flex: 1;
+        padding: 20px;
+    }
+    .container > .container {
+        flex-direction: column;
+        
+    }
+    .box
+    {
+        display: inline-block; 
+        border: 0.02px solid #000; 
+        background-color: #f9f9f9; 
+        padding: 20px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1); 
+        border-top-left-radius: 20px ;
+        border-bottom-right-radius: 20px;
+    }
+    .summary-box {
+        width: 300px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        font-family: Arial, sans-serif;
+    }
+    .summary-box h3 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    .summary-box p {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+    .summary-box .total {
+        font-size: 18px;
+        font-weight: bold;
+        color: #e74c3c;
+    }
+    .discount-form {
+        margin-top: 20px;
+    }
+    
+
+
+    button:hover {
+        background-color: #f5f4f4;
+        color: #000;
+    }
+    .progress-container {
+        width: 100%;
+        max-width: 900px;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .progress::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background-color: #e0e0e0;
+        z-index: 0;
+        transform: translateY(-50%);
+    }
+
+    .progress-step {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .progress-step.active {
+        background-color: #181818;
+    }
+
+    .progress-step.active::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background-color: #0b0b0b;
+        z-index: -1;
+        transform: translateY(-50%);
+    }
+
+    .progress-step.active + .progress-step.active::before {
+        width: 100%;
+    }
+
+    .labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .label {
+        position: relative;
+        flex: 1;
+        text-align: left;
+        
+    }
+
+    .btn1
+    {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #40cb81;
+        color: rgb(16, 15, 15);
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        
+        text-align: center;
+        text-decoration: none;
+        border-top-left-radius: 10px ;
+        border-bottom-right-radius: 10px;
+    }
+    .btn1:hover
+    {
+    background-color: #bf3ec8;
+    color: aliceblue;
+    }
+
+
+
+
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+    }
+
+    .switch input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    .switch input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+    .VATInfor {
+        display: none;
+        margin-top: 20px;
+        
+    }
+    .VATInfor input{
+        margin-top: 20px;
+        width: 100%;
+    }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .choseAddressModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="tel"], select {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .radio-group, .checkbox-group {
+        
+            align-items: center;
+            
+        }
+        .radio-group label, .checkbox-group label {
+            margin-right: 20px;
+        }
+        button[type="submit"] {
+        
+            cursor: pointer;
+        width: 100%;
+            margin-top: 20px;
+            
+        }
+        
+        
+    
+        
+        .description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+    
+        .payment-option {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        
+        .payment-option label {
+
+            font-size: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-option span {
+            margin-right: 10px;
+        }
+        
+        .payment-icon {
+            margin-left: 10px;
+            width: 40px;
+        }
+        
+        .support-text {
+            font-size: 12px;
+            color: #888;
+            margin-left: 0px;
+        }
+        .cart-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        .cart-details {
+            display: none;
+        }
+        .cart-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-details th, .cart-details td {
+            padding: 10px;
+            text-align: left;
+        }
+        .cart-details th {
+            border-bottom: 1px solid #ccc;
+        }
+        .cart-details td img {
+            width: 100px;
+            height: auto;
+        }
+        .cart-details .discount {
+            color: red;
+        }
+        .cart-details .quantity-input {
+            text-align: center;
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+</style>
+<body>
+
+    
+<form action="">
+
+    <div class="container">
+        <div class="left ">
+            <div class=" box progress-container ">
+                <div class="progress">
+                    <div class="progress-step active"></div>
+                    <div class="progress-step active"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                </div>
+                <div class="labels">
+                    <span class="label">Giỏ hàng</span>
+                    <span class="label">Đặt hàng</span>
+                    <span class="label">Thanh toán</span>
+                    <span class="label">Hoàn thành đơn</span>
+                </div>
+            </div>    
+            <div class="container" >
+                <div>
+                    <h2>Địa chỉ giao hàng</h2>
+                <div class="box">
+                    
+                    <div>
+                        <div class="container" style="align-items: center;" >
+                            <p><span id="selectedAddressType" style="margin-left: 0px;"><b>g(Cơ quan) </b></span></p>     
+                            <div id="choseAddressModal" class="modal">
+                                <div class="modal-content">
+                                   <span class="close">&times;</span>
+                                   <h2>CHỌN ĐỊA CHỈ</h2>
+                                   <div class="box" style="width: 90%; margin-top: 10px;" onclick="updateAddress(this)">
+                                    
+                                    <div class="container">
+                                        <p style="margin-left: 0px; " class="addressType"><b>g(Cơ quan) </b></p>
+                                        <button>MẶC ĐỊNH</button>
+                                    </div>
+                                    <p class="phone">Điện thoại:0867766450</p>
+                                    <p class="address">Địa chỉ:hh,Nà Nhạn,Điện Biên Phủ,Điện Biên</p>
+                                </div>
+                                <div class="box" style="width: 90%; margin-top: 10px;" onclick="updateAddress(this)">
+                                    <p style="margin-left: 0px;" class="addressType"><b>g(Nhà riêng) </b></p>
+                                    <p class="phone">Điện thoại:0867739450</p>
+                                    <p class="address">Địa chỉ:hh,Nà Nhạn,Điện Biên Phủ,Điện Biên</p>
+                                </div>
+                
+                                </div>
+                            </div>  
+                            <a href="#" style="margin-left: 100px;" id="openChoseModalLink">Chọn địa chỉ khác</a>
+                            <script>
+                                // Get the modal
+                                var modal1 = document.getElementById("choseAddressModal");
+                            
+                                // Get the button that opens the modal
+                                var link1 = document.getElementById("openChoseModalLink");
+                            
+                                // Get the <span> element that closes the modal
+                                var span1 = document.getElementsByClassName("close")[0];
+                            
+                                // When the user clicks the button, open the modal 
+                                link1.onclick = function() {
+                                    modal1.style.display = "block";
+                                }
+                            
+                                // When the user clicks on <span> (x), close the modal
+                                span1.onclick = function() {
+                                    modal1.style.display = "none";
+                                }
+                            
+                                // When the user clicks anywhere outside of the modal, close it
+                                window.onclick = function(event) {
+                                    if (event.target == modal1) {
+                                        modal1.style.display = "none";
+                                    }
+                                }
+
+                                function updateAddress(box) {
+                                    var addressType = box.querySelector(".addressType").innerText;
+                                    var phone = box.querySelector(".phone").innerText;
+                                    var address = box.querySelector(".address").innerText;
+                                    document.getElementById("selectedAddressType").innerText = addressType;
+                                    document.getElementById("selectedPhone").innerText = phone;
+                                    document.getElementById("selectedAddress").innerText = address;
+                                    modal1.style.display = "none";
+            }
+                            </script> 
+                            <button>MẶC ĐỊNH</button>
+                        </div>
+                        
+                        <p>Điện thoại: <span id="selectedPhone">0867739450</span></p>
+                        <p>Địa chỉ: <span id="selectedAddress">hh,Nà Nhạn,Điện Biên Phủ,Điện Biên</span></p>
+                    </div>
+                    
+                </div>
+                <div id="addressModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>THÊM ĐỊA CHỈ</h2>
+                        <form>
+                            <label for="name">Họ tên</label>
+                            <input type="text" id="name" name="name" required>
+                            
+                            <label for="phone">Số điện thoại</label>
+                            <input type="text" id="phone" name="phone" required>
+                            
+                            <div >
+                                <label for="tinh-tp">Tỉnh/TP:<span>*</span></label>
+                                <select id="tinh-tp" name="tinh-tp" required>
+                                    <option value="">Chọn Tỉnh/Tp</option>
+                                    <!-- Options will be populated by JS -->
+                                </select>
+                            </div>
+                            <div >
+                                <label for="quan-huyen">Quận/Huyện:<span>*</span></label>
+                                <select id="quan-huyen" name="quan-huyen" required>
+                                    <option value="">Chọn Quận/Huyện</option>
+                                    <!-- Options will be populated by JS -->
+                                </select>
+                            </div>
+                            <div >
+                                <label for="phuong-xa">Phường/Xã:<span>*</span></label>
+                                <select id="phuong-xa" name="phuong-xa" required>
+                                    <option value="">Chọn Phường/Xã</option>
+                                    <!-- Options will be populated by JS -->
+                                </select>
+                            </div>
+                            <div >
+                                <label for="dia-chi">Địa chỉ:<span>*</span></label>
+                                <input type="text" id="dia-chi" name="dia-chi" required>
+                            </div>
+                            
+                            <label><input type="radio" name="addressType" value="home" required> Nhà/chung cư</label>
+                            <label><input type="radio" name="addressType" value="company" required> Cơ quan/công ty</label>
+                            
+                            <label><input type="checkbox" name="defaultAddress"> Đặt làm mặc định</label>
+                            
+                            <button type="submit" style="margin-top:20px">THÊM ĐỊA CHỈ</button>
+
+                            
+                        </form>
+                    </div>
+                </div>
+                <button id="openModalBtn" style="margin-top: 20px;" >THÊM ĐỊA CHỈ</button>
+                <script>
+                    // Get the modal
+                    var modal = document.getElementById("addressModal");
+                
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("openModalBtn");
+                
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[1];
+                
+                    // When the user clicks the button, open the modal 
+                    btn.onclick = function() {
+                        modal.style.display = "block";
+                    }
+                
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                        modal.style.display = "none";
+                    }
+                
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+                </script>
+                </div>
+                <script src="index.js"></script>
+                <div >
+                    <h2>Phương thức giao hàng</h2>
+                    <div class="box" >
+                       
+                    <div>
+                        <p><b>Chuyển phát nhanh</b></p>
+                        <p>Thời gian giao hàng dự kiến:Thứ7,15/06/2024</p>   
+                    </div>
+                    </div>
+                    <h3>Bạn có muốn nhận hóa đơn VAT không?</h3>
+                    <div>
+                        <label class="switch">
+                            <input type="checkbox" id="toggleSwitch">
+                            <span class="slider round"></span>
+                         </label>
+                        <div class="VATInfor" id="vatInfor">
+                            <input type="text" placeholder="Nhập Email"><br>
+                            <input type="text" placeholder="Nhập mã số thuế"><br>
+                            <input type="text" placeholder="Nhập tên doanh nghiệp"><br>
+                            <input type="text" placeholder="Nhập địa chỉ"><br>
+                            <input type="text" placeholder="Nhập ghi chú"><br>
+                        </div>
+                        <script>
+                            document.getElementById('toggleSwitch').addEventListener('change', function() {
+                                const vatInfo = document.getElementById('vatInfor');
+                                if (this.checked) {
+                                    vatInfo.style.display = 'block';
+                                } else {
+                                    vatInfo.style.display = 'none';
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-methods-container box">
+                <h2>Phương thức thanh toán</h2>
+                <p class="description">Mọi giao dịch đều được bảo mật và mã hóa. Thông tin thẻ tín dụng sẽ không bao giờ được lưu lại.</p>
+                
+                    <div class="payment-option">
+                        <input type="radio" id="credit-card" name="payment" checked>
+                        <label for="credit-card">
+                            Thanh toán bằng thẻ tín dụng
+                            <img src="visa.png" alt="Visa" class="payment-icon">
+                            <img src="mastercard.png" alt="MasterCard" class="payment-icon">
+                        </label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="atm-card" name="payment">
+                        <label for="atm-card">
+                            Thanh toán bằng thẻ ATM
+                            <span class="support-text">Hỗ trợ thanh toán online hơn 38 ngân hàng phổ biến Việt Nam.</span>
+                        </label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="momo" name="payment">
+                        <label for="momo">Thanh toán bằng Momo</label>
+                    </div>
+                    <div class="payment-option">
+                        <input type="radio" id="cod" name="payment">
+                        <label for="cod">Thanh toán khi giao hàng</label>
+                    </div>
+                
+            </div>
+            <br>
+            <button class="button" onclick="toggleCartDetails()" style="margin-top: 40px;">HIỂN THỊ SẢN PHẨM</button>
+
+            <div class="cart-container">
+                
+                
+                <div class="cart-details" id="cart-details">
+                    <h2>Giỏ hàng của bạn</h2>
+                    <table>
+                        <tr>
+                            <th>TÊN SẢN PHẨM</th>
+                            <th>CHIẾT KHẤU</th>
+                            <th>SỐ LƯỢNG</th>
+                            <th>TỔNG TIỀN</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://via.placeholder.com/100" alt="Sản phẩm">
+                                <p>Đầm xoè thắt dây eo</p>
+                                <p>Màu sắc: Họa tiết Size: L</p>
+                                <p>Vàng bò</p>
+                            </td>
+                            <td>
+                                -318.000đ<br>
+                                <span class="discount">(-20%)</span>
+                            </td>
+                            <td>
+                                <input type="text" class="quantity-input" value="1" readonly>
+                            </td>
+                            <td>
+                                1.272.000đ
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img src="https://via.placeholder.com/100" alt="Sản phẩm">
+                                <p>Đầm xoè thắt dây eo</p>
+                                <p>Màu sắc: Họa tiết Size: L</p>
+                                <p>Vàng bò</p>
+                            </td>
+                            <td>
+                                -318.000đ<br>
+                                <span class="discount">(-20%)</span>
+                            </td>
+                            <td>
+                                <input type="text" class="quantity-input" value="1" readonly>
+                            </td>
+                            <td>
+                                1.272.000đ
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <script>
+                function toggleCartDetails() {
+                    var cartDetails = document.getElementById('cart-details');
+                    if (cartDetails.style.display === 'none' || cartDetails.style.display === '') {
+                        cartDetails.style.display = 'block';
+                    } else {
+                        cartDetails.style.display = 'none';
+                    }
+                }
+            </script>
+        
+        </div>
+        <div class="right">
+            <div class="summary-box">
+                <h3>Tóm tắt đơn hàng</h3>
+                <p>Tổng tiền hàng: 499.000đ</p>
+                <p>Tạm tính: 249.500đ</p>
+                <p>Phí vận chuyển: 38.000đ</p>
+                <p class="total">Tiền thanh toán: 287.500đ</p>
+                <div class="discount-form">
+                    <h3>Mã phiếu giảm giá</h3>
+                        <a href="">Mã của tôi</a>
+                        <div>
+                            <input type="text" placeholder="Mã giảm giá">
+                            <button class="btn1" style="margin-bottom: 10px;">ÁP DỤNG</button>
+                        </div>
+                        <div>
+                            <select id="support-staff-code" name="support-staff-code">
+                                <option value="" disabled selected hidden >Mã nhân viên hỗ trợ</option>
+                                <option value="staff1">Nhân viên 1</option>
+                                <option value="staff2">Nhân viên 2</option>
+                                <option value="staff3">Nhân viên 3</option>
+                                <!-- Add more options as needed -->
+                            </select>
+
+                        </div>
+                    
+                </div>
+                <button class="button">HOÀN THÀNH</button>
+            </div>
+        </div>
+        
+    
+    </div>
+
+
+
+
+
+
+</form>
+<script>
+    document.getElementById('section1').addEventListener('mouseover', function() {
+        document.getElementById('style1').disabled = false;
+        document.getElementById('style2').disabled = true;
+    });
+
+    document.getElementById('section2').addEventListener('mouseover', function() {
+        document.getElementById('style1').disabled = true;
+        document.getElementById('style2').disabled = false;
+    });
+</script>
+</body>
+</html>
