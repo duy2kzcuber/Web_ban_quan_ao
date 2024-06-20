@@ -4,7 +4,7 @@ $size=$_POST['size'];
 
 
 
-require_once 'ketnoi.php';
+require_once '../ketnoi.php';
 $themsql = "INSERT INTO `tensize` (`id`, `tensize`) VALUES ('$id', '$size')";
 
             if (mysqli_query($conn, $themsql)) {

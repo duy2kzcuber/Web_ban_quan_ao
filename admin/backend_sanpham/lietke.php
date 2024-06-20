@@ -1,34 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liệt kê danh sách sản phẩm</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<?php include "../slider.php"; 
 
-    <!-- jQuery library -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
-
-    <!-- Popper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
-    <!-- Latest compiled JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <style>
-        .image-container {
-            display: flex;
-            gap: 10px; /* Khoảng cách giữa các ảnh */
-        }
-
-        .product-image {
-            width: 75px;
-            height: auto;
-        }
-    </style>
-</head>
-<body>
+?>
     <div class="container">
         <h1>DANH SÁCH SẢN PHẨM</h1>
         <!-- Button to Open the Modal -->
@@ -57,7 +29,7 @@
             <tbody>
                 <?php
                 // Ket noi
-                require_once 'ketnoi.php';
+                require_once '../ketnoi.php';
                 // Cau lenh SQL
                 $lietke_sql = "SELECT * FROM product ORDER BY masp, tensp";
                 // Thuc thi cau lenh SQL
@@ -82,9 +54,10 @@
                             <?php
                             $fileanhArray = explode(",", $r['fileanh']); // Tach chuoi thanh mang cac ten file
                             foreach ($fileanhArray as $fileName) {
-                                echo '<img src="../html_backend/anhmota/' . $fileName . '" class="product-image">';
+                                echo '<img src="../backend_sanpham/img/' . $fileName . '" class="product-image">';
                             }
                             ?>
+                           
                         </div>
                     </td>
                     <td>
@@ -189,5 +162,4 @@
     </div>
 </div>
 
-</body>
-</html>
+

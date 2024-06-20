@@ -15,7 +15,7 @@ $baoquan = $_POST['baoquan'];
 $upload = $_POST['upload']; // Tên ảnh cũ
 
 // Kết nối đến cơ sở dữ liệu
-require_once 'ketnoi.php';
+require_once '../ketnoi.php';
 
 // Xử lý upload ảnh mới nếu có
 $newUpload = $_FILES['newUpload']['name'];

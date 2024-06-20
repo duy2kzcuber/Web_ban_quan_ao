@@ -4,7 +4,7 @@
 $madm = $_POST['madm'];
 $tendm = $_POST['tendm'];
 
-require_once 'ketnoi.php'; // Kết nối đến cơ sở dữ liệu
+require_once '../ketnoi.php'; // Kết nối đến cơ sở dữ liệu
 $suasql = "UPDATE danhmuc SET tendm='$tendm' WHERE madm='$madm'";
 
 

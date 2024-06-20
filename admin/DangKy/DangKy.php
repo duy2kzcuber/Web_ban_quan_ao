@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once 'ketnoi.php';
+    require_once '../ketnoi.php';
 
     $tenkh = trim($_POST['tenkh']);
     $sdt = trim($_POST['sdt']);

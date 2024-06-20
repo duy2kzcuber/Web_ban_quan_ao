@@ -1,15 +1,15 @@
 <?php
 
-require_once 'ketnoi.php';
+require_once '../ketnoi.php';
 
 
-$id = $_GET['sid'];
+$masp = $_GET['sid'];
 //echo $masp;
 
 
-if (!empty($id)) {
+if (!empty($masp)) {
    
-    $delete_sql = "DELETE FROM tensize WHERE id = '$id'";
+    $delete_sql = "DELETE FROM product WHERE masp = '$masp'";
 
     // Thực thi câu lệnh SQL
     if (mysqli_query($conn, $delete_sql)) {
@@ -20,7 +20,7 @@ if (!empty($id)) {
         echo "Lỗi: " . mysqli_error($conn);
     }
 } else {
-    echo "id không hợp lệ.";
+    echo "masp không hợp lệ.";
 }
 
 

@@ -3,7 +3,7 @@
 $id=$_GET['sid'];
 
 //ketnoi
-require_once 'ketnoi.php';
+require_once '../ketnoi.php';
 //cau lenh de lay thong tin 
 $sua_sql="SELECT *FROM tensize WHERE id='$id'";
 $result=mysqli_query($conn,$sua_sql);

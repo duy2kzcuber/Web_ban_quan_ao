@@ -1,6 +1,6 @@
 <?php
 
-require_once 'ketnoi.php';
+require_once '../ketnoi.php';
 
 
 $madm = $_GET['sid'];

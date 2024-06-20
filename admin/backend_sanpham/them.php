@@ -13,7 +13,7 @@ $baoquan = $_POST['baoquan'];
 
 // Kiểm tra nếu các trường bắt buộc không được để trống
 if (!empty($masp) && !empty($tensp) && !empty($gia)) {
-    require_once 'ketnoi.php'; // Kết nối đến cơ sở dữ liệu
+    require_once '../ketnoi.php'; // Kết nối đến cơ sở dữ liệu
 
     // Biến để lưu trữ tên ảnh chính và ảnh mô tả
     $fileName = '';

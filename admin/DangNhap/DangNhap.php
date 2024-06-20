@@ -87,7 +87,7 @@
         session_start();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            require_once 'ketnoi.php';
+            require_once '../ketnoi.php';
 
             $sdt = $_POST['sdt'];
             $mk = $_POST['mk'];

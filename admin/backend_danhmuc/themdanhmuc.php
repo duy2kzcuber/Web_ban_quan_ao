@@ -4,7 +4,7 @@ $tendm=$_POST['tendm'];
 
 
 
-require_once 'ketnoi.php';
+require_once '../ketnoi.php';
 $themsql = "INSERT INTO `danhmuc` ( `tendm`) VALUES ( '$tendm')";
 
             if (mysqli_query($conn, $themsql)) {
