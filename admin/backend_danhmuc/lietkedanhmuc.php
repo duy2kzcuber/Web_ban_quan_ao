@@ -12,7 +12,8 @@
     <thead>
       <tr>
         <th>Mã Danh Mục</th>
-        <th>Tên Danh Mục</th>
+        <th>Tên Danh Mục Cha</th>
+        <th>Tên Danh Mục Con</th>
         <th>Thao tác</th>
         
         
@@ -22,7 +23,6 @@
     <?php
 //ketnoi
 require_once '../ketnoi.php';
-
 //cau lenh
 $lietke_sql="SELECT * FROM danhmuc order by madm,tendm";
 //thuc thi cau lenh
@@ -32,6 +32,7 @@ while ($r = mysqli_fetch_assoc($result)) {
     ?>
     <tr>
         <td><?php echo $r['madm'];?></td>
+        <td><?php echo $r['danhmuccha'];?></td>
         <td><?php echo $r['tendm'];?></td>
         <td>
             <a href="suadanhmuc.php?sid=<?php echo $r['madm'];?>" class="btn btn-info">Sửa</a>
@@ -68,7 +69,11 @@ while ($r = mysqli_fetch_assoc($result)) {
                 <input type="text" id="madm" class="form-control" name="madm">
             </div>
             <div class="form-group">
-                <label for="tendm">Tên danh mục</label>
+                <label for="danhmuccha">Tên danh mục cha</label>
+                <input type="text" id="danhmuccha" class="form-control" name="danhmuccha">
+            </div>
+            <div class="form-group">
+                <label for="tendm">Tên danh mục con</label>
                 <input type="text" id="tendm" class="form-control" name="tendm">
             </div>
 
@@ -88,8 +93,3 @@ while ($r = mysqli_fetch_assoc($result)) {
     </div>
   </div>
 </div>
-
-
-
-
-

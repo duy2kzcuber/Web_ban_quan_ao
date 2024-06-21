@@ -6,13 +6,12 @@ $masp = $_POST['sid'];
 $tensp = $_POST['tensp'];
 $gia = $_POST['gia'];
 $mausac = $_POST['mausac'];
-$soluong=$_POST['soluong'];
-$ngaytao=$_POST['ngaytao'];
-
+$soluong = $_POST['soluong'];
+$ngaytao = $_POST['ngaytao'];
 $gioithieu = $_POST['gioithieu'];
 $ctsp = $_POST['ctsp'];
 $baoquan = $_POST['baoquan'];
-$upload = $_POST['upload']; // Tên ảnh cũ
+$upload = $_POST['upload']; // Tên ảnh chính cũ
 
 // Kết nối đến cơ sở dữ liệu
 require_once '../ketnoi.php';
@@ -39,7 +38,7 @@ if (!empty($newUpload)) {
     $dest_path = $uploadFileDir . $fileName;
 
     // Di chuyển ảnh chính mới vào thư mục đích
-    if (!move_uploaded_file($fileTmpPath, $dest_path)) {
+    if (!move_uploaded_file($fileTmpPath,    $dest_path)) {
         echo "Lỗi khi di chuyển ảnh chính " . $fileName . " đến thư mục đích.<br>";
     }
 
@@ -48,51 +47,101 @@ if (!empty($newUpload)) {
     mysqli_query($conn, $updateAnh);
 }
 
-// Xử lý upload ảnh mô tả mới nếu có
-$newUploads = $_FILES['newuploads']['name'];
-if (!empty($newUploads)) {
-    $uploadedFiles = [];
-    $totalFiles = count($_FILES['newuploads']['name']);
-    
-    for ($i = 0; $i < $totalFiles; $i++) {
-        $fileTmpPath = $_FILES['newuploads']['tmp_name'][$i];
-        $fileNameTemp = $_FILES['newuploads']['name'][$i];
-        $fileName = str_replace(" ", "", $fileNameTemp); //.rand(100000,999999)
-        $fileSize = $_FILES['newuploads']['size'][$i];
-        $fileType = $_FILES['newuploads']['type'][$i];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
+// Xử lý upload ảnh mô tả 1 mới nếu có
+$newUpload1 = $_FILES['newUpload1']['name'];
+if (!empty($newUpload1)) {
+    $fileNameTemp = $_FILES['newUpload1']['name'];
+    $fileName1 = str_replace(" ", "", $fileNameTemp); //.rand(100000,999999)
+    $fileTmpPath = $_FILES['newUpload1']['tmp_name'];
+    $fileSize = $_FILES['newUpload1']['size'];
+    $fileType = $_FILES['newUpload1']['type'];
+    $fileNameCmps = explode(".", $fileName1);
+    $fileExtension = strtolower(end($fileNameCmps));
 
-        // Thư mục lưu trữ ảnh mô tả
-        $uploadFileDir = './anhmota/';
+    // Thư mục lưu trữ ảnh mô tả 1
+    $uploadFileDir = './anhmota/';
 
-        // Kiểm tra và tạo thư mục nếu chưa tồn tại
-        if (!file_exists($uploadFileDir)) {
-            mkdir($uploadFileDir, 0777, true);
-        }
-
-        $dest_path = $uploadFileDir . $fileName;
-
-        // Di chuyển ảnh mô tả vào thư mục đích
-        if (move_uploaded_file($fileTmpPath, $dest_path)) {
-            $uploadedFiles[] = $fileName;
-        } else {
-            echo "Lỗi khi di chuyển ảnh mô tả " . $fileName . " đến thư mục đích.<br>";
-        }
+    // Kiểm tra và tạo thư mục nếu chưa tồn tại
+    if (!file_exists($uploadFileDir)) {
+        mkdir($uploadFileDir, 0777, true);
     }
 
-    // Nếu có ảnh mô tả mới được upload thành công
-    if (!empty($uploadedFiles)) {
-        $fileNamesString = implode(",", $uploadedFiles);
+    $dest_path = $uploadFileDir . $fileName1;
 
-        // Cập nhật tên các ảnh mô tả mới vào cơ sở dữ liệu
-        $updateFileAnh = "UPDATE product SET fileanh='$fileNamesString' WHERE masp='$masp'";
-        mysqli_query($conn, $updateFileAnh);
+    // Di chuyển ảnh mô tả 1 vào thư mục đích
+    if (!move_uploaded_file($fileTmpPath, $dest_path)) {
+        echo "Lỗi khi di chuyển ảnh mô tả 1 " . $fileName1 . " đến thư mục đích.<br>";
     }
+
+    // Cập nhật tên ảnh mô tả 1 mới vào cơ sở dữ liệu
+    $updateAnh1 = "UPDATE product SET anhmt1='$fileName1' WHERE masp='$masp'";
+    mysqli_query($conn, $updateAnh1);
 }
 
+// Xử lý upload ảnh mô tả 2 mới nếu có
+$newUpload2 = $_FILES['newUpload2']['name'];
+if (!empty($newUpload2)) {
+    $fileNameTemp = $_FILES['newUpload2']['name'];
+    $fileName2 = str_replace(" ", "", $fileNameTemp); //.rand(100000,999999)
+    $fileTmpPath = $_FILES['newUpload2']['tmp_name'];
+    $fileSize = $_FILES['newUpload2']['size'];
+    $fileType = $_FILES['newUpload2']['type'];
+    $fileNameCmps = explode(".", $fileName2);
+    $fileExtension = strtolower(end($fileNameCmps));
+
+    // Thư mục lưu trữ ảnh mô tả 2
+    $uploadFileDir = './anhmota/';
+
+    // Kiểm tra và tạo thư mục nếu chưa tồn tại
+    if (!file_exists($uploadFileDir)) {
+        mkdir($uploadFileDir, 0777, true);
+    }
+
+    $dest_path = $uploadFileDir . $fileName2;
+
+    // Di chuyển ảnh mô tả 2 vào thư mục đích
+    if (!move_uploaded_file($fileTmpPath, $dest_path)) {
+        echo "Lỗi khi di chuyển ảnh mô tả 2 " . $fileName2 . " đến thư mục đích.<br>";
+    }
+
+    // Cập nhật tên ảnh mô tả 2 mới vào cơ sở dữ liệu
+    $updateAnh2 = "UPDATE product SET anhmt2='$fileName2' WHERE masp='$masp'";
+    mysqli_query($conn, $updateAnh2);
+}
+// Xử lý upload ảnh mô tả 3 mới nếu có
+$newUpload3 = $_FILES['newUpload3']['name'];
+if (!empty($newUpload3)) {
+    $fileNameTemp = $_FILES['newUpload3']['name'];
+    $fileName3 = str_replace(" ", "", $fileNameTemp); //.rand(100000,999999)
+    $fileTmpPath = $_FILES['newUpload3']['tmp_name'];
+    $fileSize = $_FILES['newUpload3']['size'];
+    $fileType = $_FILES['newUpload3']['type'];
+    $fileNameCmps = explode(".", $fileName3);
+    $fileExtension = strtolower(end($fileNameCmps));
+
+    // Thư mục lưu trữ ảnh mô tả 3
+    $uploadFileDir = './anhmota/';
+
+    // Kiểm tra và tạo thư mục nếu chưa tồn tại
+    if (!file_exists($uploadFileDir)) {
+        mkdir($uploadFileDir, 0777, true);
+    }
+
+    $dest_path = $uploadFileDir . $fileName3;
+
+    // Di chuyển ảnh mô tả 3 vào thư mục đích
+    if (!move_uploaded_file($fileTmpPath, $dest_path)) {
+        echo "Lỗi khi di chuyển ảnh mô tả 3 " . $fileName3 . " đến thư mục đích.<br>";
+    }
+
+    // Cập nhật tên ảnh mô tả 3 mới vào cơ sở dữ liệu
+    $updateAnh3 = "UPDATE product SET anhmt3='$fileName3' WHERE masp='$masp'";
+    mysqli_query($conn, $updateAnh3);
+}
+
+
 // Cập nhật thông tin sản phẩm vào cơ sở dữ liệu
-$updateSql = "UPDATE product SET tensp='$tensp', gia='$gia', mausac='$mausac',soluong='$soluong',ngaytao='$ngaytao', gioithieu='$gioithieu', ctsp='$ctsp', baoquan='$baoquan' WHERE masp='$masp'";
+$updateSql = "UPDATE product SET tensp='$tensp', gia='$gia', mausac='$mausac', soluong='$soluong', ngaytao='$ngaytao', gioithieu='$gioithieu', ctsp='$ctsp', baoquan='$baoquan' WHERE masp='$masp'";
 
 if (mysqli_query($conn, $updateSql)) {
     // Nếu cập nhật thành công, chuyển hướng về trang liệt kê sản phẩm
@@ -103,3 +152,4 @@ if (mysqli_query($conn, $updateSql)) {
     echo "Lỗi: " . mysqli_error($conn);
 }
 ?>
+

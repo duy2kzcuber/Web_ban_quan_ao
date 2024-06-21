@@ -167,67 +167,82 @@
         </div>
     </header>
 
+    <?php
+    $masp=$_GET['masp'];
+
+//ketnoi
+require_once 'ketnoi.php';
+//cau lenh
+$lietke_sql="SELECT * FROM product WHERE masp='$masp'";
+//thuc thi cau lenh
+$result = mysqli_query($conn,$lietke_sql);
+?>
     <!-- Day la phan product ---------->
     <section class="product">
-        <div class="container-product">
+    <div class="container-product">
+        <?php if ($r = mysqli_fetch_assoc($result)) { ?>
             <div class="product-top row">
-                <p>Trang chủ</p> <span>&#10230;</span> <p>Nam</p> <span>&#10230;</span> <p>Hàng nam mới về</p><span>&#10230;</span> <p>ÁO THUN REGULAR IN HÌNH</p>
+                <p>Trang chủ</p> <span>&#10230;</span> <p>Nam</p> <span>&#10230;</span> <p>Hàng nam mới về</p> <span>&#10230;</span> <p><?php echo $r['tensp']; ?></p>
             </div>
             <div class="product-content">
                 <div class="product-content-left row">
-                    <div class="product-content-left-big-img" onmousemove="zoomImage(event)"   onmouseleave="unzoomImage(event)">
-                         <img id="mainImage" src="img/prd1.webp" alt="">
+                    <div class="product-content-left-big-img" onmousemove="zoomImage(event)" onmouseleave="unzoomImage(event)">
+                        <img id="mainImage" src="../html_backend/img/<?php echo $r['anh']; ?>" alt="">
                     </div>
                     <div class="product-content-left-small-img">
-                        <img src="img/prd1.webp" alt="" onclick="changeImage('img/prd1.webp')">
-                        <img src="img/prd2.webp" alt="" onclick="changeImage('img/prd2.webp')">
-                        <img src="img/prd3.webp" alt="" onclick="changeImage('img/prd3.webp')">
-                        <img src="img/prd4.webp" alt="" onclick="changeImage('img/prd4.webp')">
+                        <!-- Small images for changing main image on click -->
+                        <img src="../html_backend/img/<?php echo $r['anh']; ?>" alt="" onclick="changeImage('../html_backend/img/<?php echo $r['anh']; ?>')">
+                        <img src="../html_backend/anhmota/<?php echo $r['anhmt1']; ?>" alt="" onclick="changeImage('../html_backend/anhmota/<?php echo $r['anhmt1']; ?>')">
+                        <img src="../html_backend/anhmota/<?php echo $r['anhmt2']; ?>" alt="" onclick="changeImage('../html_backend/anhmota/<?php echo $r['anhmt2']; ?>')">
+                        <img src="../html_backend/anhmota/<?php echo $r['anhmt3']; ?>" alt="" onclick="changeImage('../html_backend/anhmota/<?php echo $r['anhmt3']; ?>')">
                     </div>
                 </div>
-                
                 <div class="product-content-right">
                     <div class="product-content-right-product-name">
-                        <h1>ÁO THUN REGULAR IN HÌNH</h1>
+                        <h1><?php echo $r['tensp']; ?></h1>
                         <br>
-                        <p>MSP : 57E2969</p>
+                        <p>MSP : <?php echo $r['masp']; ?></p>
                     </div>
                     <div class="product-content-right-product-price">
-                        <p>1.500.000đ</p>
+                        <p><?php echo number_format($r['gia']); ?>đ</p>
                     </div>
                     <div class="product-content-right-product-color">
-                        <p><span style="font-weight: bold;">Màu sắc </span>:Trắng<span style="color: red;">*</span></p>
-                        <div class="product-content-right-product-color-img">
-                            <img src="img/tt.png" alt="">
-                        </div>
+                        <p><span style="font-weight: bold;">Màu sắc </span>:<?php echo $r['mausac']; ?><span style="color: red;">*</span></p>
                     </div>
                     <div class="product-content-right-product-size">
-                        
                         <div class="size">
-                            <span>S</span>
-                            <span>M</span>
-                            <span>L</span>
-                            <span>XL</span>
-                            <span>XXL</span>
+                            <?php
+                          
+                            $lietke_size_sql = "SELECT * FROM tensize";
+                            $result_size = mysqli_query($conn, $lietke_size_sql); 
+
+                            // Display sizes if available
+                            if ($result_size && mysqli_num_rows($result_size) > 0) {
+                                echo '<div class="size">';
+                                while ($row_size = mysqli_fetch_assoc($result_size)) {
+                                    echo '<span>' . htmlspecialchars($row_size['tensize']) . '</span>';
+                                }
+                                echo '</div>';
+                            } else {
+                                echo '<p>Không có size nào được tìm thấy.</p>';
+                            }
+                            ?>
                         </div>
                         <div>
                             <i class="fa-solid fa-ruler"></i>
-                        <a href="https://ivymoda.com/about/tu-van-size" id="size-chart-link"><u>Bảng Size</u></a>
+                            <a href="https://ivymoda.com/about/tu-van-size" id="size-chart-link"><u>Bảng Size</u></a>
                         </div>
                     </div>
                     <div class="quantity">
                         <p style="font-weight: bold;">Số lượng:</p>
-                        <input type="number" min="0" value="1"> 
-                        
+                        <input type="number" min="0" value="1">
                     </div>
                     <br>
-                    <p style="color: red;">Vui lòng chọn size*</p> 
-                    <br>
-                    <br>
-                
+                    <p style="color: red;">Vui lòng chọn size*</p>
+                    <br><br>
                     <div class="product-content-right-product-button">
-                        <button><a href="cart.html"><i class="fas fa-shopping-cart"></i> <p>MUA HÀNG </p></a></button>
-                        <button><i class="fa-solid fa-cart-plus"></i><p>THÊM VÀO GIỎ HÀNG </p></button>
+                        <button><i class="fas fa-shopping-cart"></i> <p>MUA HÀNG</p></button>
+                        <button><i class="fa-solid fa-cart-plus"></i><p>THÊM VÀO GIỎ HÀNG</p></button>
                     </div>
                     <br>
                     <div class="product-content-right-product-icon">
@@ -245,14 +260,9 @@
                         <img src="img/qr.png" alt="">
                     </div>
                     <div class="product-content-right-bottom">
-                        <div class="product-content-right-bottom-top">
-
-                        </div>
+                        <div class="product-content-right-bottom-top"></div>
                     </div>
-
-                    <br>
-                    <br>
-                
+                    <br><br>
                     <div class="product-detail__tab">
                         <div class="product-detail__tab-header">
                             <div class="tab-item active" onclick="showTabContent('gioi-thieu', event)">
@@ -268,217 +278,96 @@
                         <div class="product-detail__tab-body">
                             <div id="gioi-thieu" class="tab-content active">
                                 <div class="short-content">
-                                    <p>Đầm voan hoa mang đến vẻ ngoài nhẹ nhàng, thanh lịch mà tinh tế. Với độ dài qua gối, cùng kiểu dáng xòe, đầm khéo léo tôn lên thân hình&nbsp;của người mặc đẹp dịu dàng. Đầm cổ tròn, tay xếp ly tạo cảm&nbsp; giác bồng nhẹ.&nbsp;</p>
-                
-                                    <div class="more-content">
-                                        <p>Chất liệu tơ voan mềm mại tạo cảm giác dễ chịu khi tiếp xúc với da cũng như giúp bạn luôn cảm thấy thoải mái và mát mẻ trong suốt cả ngày dài.</p>
-                
-                                        <p>Đầm có họa tiết hoa bắt mắt, có thể đi kèm với các phụ kiện như khuyên tai&nbsp;và một đôi giày cao gót, hoặc có thể được kết hợp với một chiếc mũ vành rộng cùng đôi&nbsp;sandal để tạo ra một vẻ ngoài năng lượng và phong cách.&nbsp;</p>
-                
-                                        <p><strong>Thông tin mẫu:</strong></p>
-                
-                                        <p><strong>Chiều cao: </strong> 167 cm</p>
-                
-                                        <p><strong>Cân nặng: </strong> 50 kg</p>
-                
-                                        <p><strong>Số đo 3 vòng: </strong>83-65-93 cm</p>
-                
-                                        <p>Mẫu mặc size M</p>
-                
-                                        <p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>
-                                    </div>
+                                    <p><?php echo $r['gioithieu']; ?></p>
                                 </div>
-                
                                 <div class="product-detail-divider">
                                     <span><i class="fa fa-chevron-down" onclick="toggleContent('gioi-thieu')"></i></span>
                                 </div>
                             </div>
                             <div id="chi-tiet-san-pham" class="tab-content">
-                                <div class="short-content">
-                                    <table>
-                                        <tr>
-                                            <td><strong>Dòng sản phẩm</strong></td>
-                                            <td>Ladies</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Nhóm sản phẩm</strong></td>
-                                            <td>Đầm</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Cổ áo</strong></td>
-                                            <td>Cổ tròn</td>
-                                        </tr>
-                                    </table>
-                                    
-                                    <div class="more-content">
-                                        <table>
-                                            <tr>
-                                                <td><strong>Tay áo</strong></td>
-                                                <td>Tay ngắn</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Kiểu dáng</strong></td>
-                                                <td>Đầm xòe</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Độ dài</strong></td>
-                                                <td>Qua gối</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Họa tiết</strong></td>
-                                                <td>Hoa</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Chất liệu</strong></td>
-                                                <td>Lụa</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                
+                                <p><?php echo $r['ctsp']; ?></p>
                                 <div class="product-detail-divider">
                                     <span><i class="fa fa-chevron-down" onclick="toggleContent('chi-tiet-san-pham')"></i></span>
                                 </div>
                             </div>
                             <div id="bao-quan" class="tab-content">
-                                <div class="short-content">
-                                    <ul>
-                                        <li>Các sản phẩm thuộc dòng cao cấp (Senora) và áo khoác (dạ, tweed, lông, phao) chỉ giặt khô, tuyệt đối không giặt ướt.</li>
-                                        <li>Vải dệt kim: sau khi giặt sản phẩm phải được phơi ngang tránh bai giãn.</li>
-                                        <li>Vải voan, lụa, chiffon nên giặt bằng tay.</li>
-                                    </ul>
-                                    
-                                    <div class="more-content">
-                                        <ul>
-                                            <li>Vải thô, tuytsi, kaki không có phối hay trang trí đá cườm thì có thể giặt máy.</li>
-                                            <li>Vải thô, tuytsi, kaki có phối màu tương phản hay trang trí voan, lụa, đá cườm thì cần giặt tay.</li>
-                                            <li>Đồ Jeans nên hạn chế giặt bằng máy giặt vì sẽ làm phai màu jeans. Nếu giặt thì nên lộn trái sản phẩm khi giặt, đóng khuy, kéo khóa, không nên giặt chung cùng đồ sáng màu, tránh dính màu vào các sản phẩm khác.</li>
-                                            <li>Các sản phẩm cần được giặt ngay không ngâm tránh bị loang màu, phân biệt màu và loại vải để tránh trường hợp vải phai. Không nên giặt sản phẩm với xà phòng có chất tẩy mạnh, nên giặt cùng xà phòng pha loãng.</li>
-                                            <li>Các sản phẩm có thể giặt bằng máy thì chỉ nên để chế độ giặt nhẹ, vắt mức trung bình và nên phân các loại sản phẩm cùng màu và cùng loại vải khi giặt.</li>
-                                            <li>Nên phơi sản phẩm tại chỗ thoáng mát, tránh ánh nắng trực tiếp sẽ dễ bị phai bạc màu, nên làm khô quần áo bằng cách phơi ở những điểm gió sẽ giữ màu vải tốt hơn.</li>
-                                            <li>Những chất vải 100% cotton, không nên phơi sản phẩm bằng mắc áo mà nên vắt ngang sản phẩm lên dây phơi để tránh tình trạng rạn vải.</li>
-                                            <li>Khi ủi sản phẩm bằng bàn là và sử dụng chế độ hơi nước sẽ làm cho sản phẩm dễ ủi phẳng, mát và không bị cháy, giữ màu sản phẩm được đẹp và bền lâu hơn. Nhiệt độ của bàn là tùy theo từng loại vải.</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                
+                                <p><?php echo $r['baoquan']; ?></p>
                                 <div class="product-detail-divider">
                                     <span><i class="fa fa-chevron-down" onclick="toggleContent('bao-quan')"></i></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
+        <?php }?>
+    </div>
+    <?php
+
+    $lietke_sql = "SELECT * FROM product WHERE masp='$masp'";
+    $result = mysqli_query($conn, $lietke_sql);
+
+
+    if (!$result) {
+        die('Query error: ' . mysqli_error($conn));
+    }
+
+  
+    if (mysqli_num_rows($result) > 0) {
+        $mainProduct = mysqli_fetch_assoc($result); 
+        if (isset($mainProduct['madm'])) {
+            $category = $mainProduct['madm'];
+            $similarProductsQuery = "SELECT * FROM product WHERE madm='$category' AND masp != '$masp' LIMIT 5";
+            $similarProductsResult = mysqli_query($conn, $similarProductsQuery);
+
+            if ($similarProductsResult && mysqli_num_rows($similarProductsResult) > 0) {
+?>
+                <section class="product">
+                    <div class="container-product">
+                        <p class="sizegiuaindam">SẢN PHẨM TƯƠNG TỰ</p>
+                        <br><br><br>
+                        <div class="content">
+                            <div class="moda">
+                                <?php while ($r = mysqli_fetch_assoc($similarProductsResult)) { ?>
+                                    <div class="moda-item">
+                                        <ul>
+                                            <li>
+                                                <div class="image-wrapper">
+                                                    <img src="../html_backend/img/<?php echo $r['anh']; ?>" alt="">
+                                                    <img class="img2" src="../html_backend/anhmota/<?php echo $r['anhmt1']; ?>" alt="">
+                                                </div>
+                                            </li>
+                                            <li class="description">
+                                                <a href="product.php?masp=<?php echo $r['masp']; ?>" class="product-name"><?php echo $r['tensp']; ?></a>
+                                                <a href="product.php?masp=<?php echo $r['masp']; ?>" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+                                            </li>
+                                            <li><?php echo number_format($r['gia']); ?>đ</li>
+                                        </ul>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+<?php
+            } else {
+               
+                echo '<p>Không có sản phẩm tương tự.</p>';
+            }
+
             
+            mysqli_free_result($similarProductsResult);
+        } else {
+            echo "Không tìm thấy 'madm' trong dữ liệu sản phẩm.";
+        }
+    } else {
+        echo "Không tìm thấy sản phẩm với mã sản phẩm '$masp'.";
+    }
 
-            <br>
-            <br>
-            <br>
-            <br>
-            <p class="sizegiuaindam"> SẢN PHẨM TƯƠNG TỰ</p>
-            <br>
-            <br>
-            <br>
-            <div class="content">
-                <div class="moda">
-                  <div class="moda-item">
-                     <ul>
-                      <li>
-                          <div class="image-wrapper">
-                          <img src="img/tt1.webp" alt="">
-                          <img class="img2" src="img/tt2.webp" alt="">
-                          </div>
-                      </li>
-                      <li class="mau">
-                         <span><img src="img/h1.png" alt=""></span>
-                      </li>
-                      <li class="description">
-                          <a href="product.html" class="product-name">Áo Thun Polo Kẻ Viền</a>
-                          <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                      </li>
-                      <li>375.000đ</li>
-                     </ul>
-                  </div>
-                  <div class="moda-item">
-                      <ul>
-                       <li>
-                           <div class="image-wrapper">
-                           <img src="img/tt3.webp" alt="">
-                           <img class="img2" src="img/tt4.webp" alt="">
-                           </div>
-                       </li>
-                       <li class="mau">
-                          <span><img src="img/h2.png" alt=""></span>
-                       </li>
-                       <li class="description">
-                           <a href="product.html" class="product-name">Áo Thun In Hình</a>
-                           <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                       </li>
-                       <li>345.000đ</li>
-                      </ul>
-                   </div>
-          
-                   <div class="moda-item">
-                      <ul>
-                       <li>
-                           <div class="image-wrapper">
-                           <img src="img/tt5.jpg" alt="">
-                           <img class="img2" src="img/tt6.jpg" alt="">
-                           </div>
-                       </li>
-                       <li class="mau">
-                          <span><img src="img/h3.png" alt=""></span>
-                       </li>
-                       <li class="description">
-                           <a href="product.html" class="product-name">Áo Polo Thêu Họa Tiết</a>
-                           <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                       </li>
-                       <li>590.000đ</li>
-                      </ul>
-                   </div>
-                   <div class="moda-item">
-                      <ul>
-                       <li>
-                           <div class="image-wrapper">
-                           <img src="img/tt7.webp" alt="">
-                           <img class="img2" src="img/tt8.webp" alt="">
-                           </div>
-                       </li>
-                       <li class="mau">
-                          <span><img src="img/h4.png" alt=""></span>
-                       </li>
-                       <li class="description">
-                           <a href="product.html" class="product-name">Áo Thun Your Dream</a>
-                           <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                       </li>
-                       <li>890.000đ</li>
-                      </ul>
-                   </div>
-                   <div class="moda-item">
-                      <ul>
-                       <li>
-                           <div class="image-wrapper">
-                           <img src="img/tt9.webp" alt="">
-                           <img class="img2" src="img/tt10.webp" alt="">
-                           </div>
-                       </li>
-                       <li class="mau">
-                          <span><img src="img/h5.png" alt=""></span>
-                       </li>
-                       <li class="description">
-                           <a href="product.html" class="product-name">Áo Thun Trơn Slim Pit</a>
-                           <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                       </li>
-                       <li>290.000đ</li>
-                      </ul>
-                   </div>
-                   
-                 </div> 
-        </div>
+?>
 
-    </section>
+</section>
+
     <br>
     <br>
     <br>

@@ -1,6 +1,7 @@
 <?php include "../slider.php"; 
 
 ?>
+    
     <div class="container">
         <h1>DANH SÁCH SẢN PHẨM</h1>
         <!-- Button to Open the Modal -->
@@ -12,7 +13,8 @@
             <thead>
                 <tr>
                     <th>Mã sản phẩm</th>
-                    <th>Tên danh mục</th>
+                    <th>Tên danh mục cha </th>
+                    <th>Tên danh mục con</th>
                     <th>Tên sản phẩm</th>
                     <th>Giá</th>
                     <th>Màu sắc</th>
@@ -22,24 +24,33 @@
                     <th>Chi tiết sản phẩm</th>
                     <th>Bảo quản</th>
                     <th>Ảnh chính</th>
-                    <th>Ảnh mô tả</th>
+                    <th>Ảnh mô tả 1</th>
+                    <th>Ảnh mô tả 2</th>
+                    <th>Ảnh mô tả 3</th>
                     <th>Thao tác</th>
                 </tr>
             </thead>
             <tbody>
-                <?php
-                // Ket noi
-                require_once '../ketnoi.php';
-                // Cau lenh SQL
-                $lietke_sql = "SELECT * FROM product ORDER BY masp, tensp";
-                // Thuc thi cau lenh SQL
-                $result = mysqli_query($conn, $lietke_sql);
-                // Duyet ket qua va in ra
-                while ($r = mysqli_fetch_assoc($result)) {
-                ?>
+            <?php
+// Kết nối CSDL
+require_once '../ketnoi.php';
+
+// Câu lệnh SQL để lấy danh sách sản phẩm kèm tên danh mục
+$lietke_sql = "SELECT p.*, d.tendm ,d.danhmuccha
+               FROM product p
+               INNER JOIN danhmuc d ON p.madm = d.madm 
+               ORDER BY p.masp, p.tensp";
+
+// Thực thi câu lệnh SQL
+$result = mysqli_query($conn, $lietke_sql);
+
+// Duyệt kết quả và in ra từng sản phẩm
+while ($r = mysqli_fetch_assoc($result)) {
+?>
                 <tr>
                     <td><?php echo $r['masp']; ?></td>
-                    <td><?php echo $r['madm']; ?></td>
+                    <td><?php echo $r['danhmuccha']; ?></td>
+                    <td><?php echo $r['tendm']; ?></td>
                     <td><?php echo $r['tensp']; ?></td>
                     <td><?php echo $r['gia']; ?></td>
                     <td><?php echo $r['mausac']; ?></td>
@@ -48,18 +59,11 @@
                     <td><?php echo $r['gioithieu']; ?></td>
                     <td><?php echo $r['ctsp']; ?></td>
                     <td><?php echo $r['baoquan']; ?></td>
-                    <td><img src="../html_backend/img/<?php echo $r['anh']; ?>" style="width: 100px; height: auto;"></td>
-                    <td>
-                        <div class="image-container">
-                            <?php
-                            $fileanhArray = explode(",", $r['fileanh']); // Tach chuoi thanh mang cac ten file
-                            foreach ($fileanhArray as $fileName) {
-                                echo '<img src="../backend_sanpham/img/' . $fileName . '" class="product-image">';
-                            }
-                            ?>
-                           
-                        </div>
-                    </td>
+                    <td><img src="../backend_sanpham/img/<?php echo $r['anh']; ?>" style="width: 100px; height: auto;"></td>
+                    <td><img src="../backend_sanpham/anhmota/<?php echo $r['anhmt1']; ?>" style="width: 100px; height: auto;"></td>
+                    <td><img src="../backend_sanpham/anhmota/<?php echo $r['anhmt2']; ?>" style="width: 100px; height: auto;"></td>
+                    <td><img src="../backend_sanpham/anhmota/<?php echo $r['anhmt3']; ?>" style="width: 100px; height: auto;"></td>
+                    
                     <td>
                         <a href="sua.php?sid=<?php echo $r['masp']; ?>" class="btn btn-info">Sửa</a>
                         <a onclick="return confirm('Bạn có muốn xóa sản phẩm này không?');" href="xoa.php?sid=<?php echo $r['masp']; ?>" class="btn btn-danger">Xóa</a>
@@ -92,20 +96,58 @@
                                 <input type="text" id="masp" class="form-control" name="masp">
                             </div>
                             <div class="form-group">
-                                <label for="madm">Tên danh mục</label>
-                                <select name="madm" id="madm" class="form-control" required>
-                                    <option value="">-----Vui lòng chọn danh mục------</option>
-                                    <?php
-                                    // Truy vấn tất cả các danh mục
-                                    $query = "SELECT madm, tendm FROM danhmuc";
-                                    $result = mysqli_query($conn, $query);
-                                    // Hiển thị các danh mục trong thẻ select
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                        echo '<option value="' . $row['madm'] . '">' . $row['tendm'] . '</option>';
-                                    }
-                                    ?>
-                                </select>
-                            </div>
+    <label for="danhmuccha">Tên danh mục cha </label>
+    <select name="danhmuccha" id="danhmuccha" class="form-control" required onchange="filterSubcategories()">
+        <option value="">-----Vui lòng chọn danh mục------</option>
+        <?php
+        // Truy vấn tất cả các danh mục cha duy nhất
+        $query = "SELECT DISTINCT danhmuccha FROM danhmuc";
+        $result = mysqli_query($conn, $query);
+        
+        // Hiển thị các danh mục cha trong thẻ select
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<option value="' . $row['danhmuccha'] . '">' . $row['danhmuccha'] . '</option>';
+        }
+        ?>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="madm">Tên danh mục con </label>
+    <select name="madm" id="madm" class="form-control" required>
+        <option value="">-----Vui lòng chọn danh mục------</option>
+        <?php
+        // Truy vấn tất cả các danh mục
+        $query = "SELECT madm, tendm, danhmuccha FROM danhmuc";
+        $result = mysqli_query($conn, $query);
+        
+        // Hiển thị các danh mục trong thẻ select
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<option value="' . $row['madm'] . '" data-danhmuccha="' . $row['danhmuccha'] . '">' . $row['tendm'] . '</option>';
+        }
+        ?>
+    </select>
+</div>
+
+<script>
+    function filterSubcategories() {
+        var selectedDanhMucCha = document.getElementById('danhmuccha').value;
+        var subcategories = document.getElementById('madm').getElementsByTagName('option');
+        
+        for (var i = 0; i < subcategories.length; i++) {
+            var danhMucCha = subcategories[i].getAttribute('data-danhmuccha');
+            if (selectedDanhMucCha === '' || danhMucCha === selectedDanhMucCha) {
+                subcategories[i].style.display = '';
+            } else {
+                subcategories[i].style.display = 'none';
+            }
+        }
+        
+        // Đặt lại giá trị mặc định cho danh mục con khi thay đổi danh mục cha
+        document.getElementById('madm').value = '';
+    }
+</script>
+
                             <div class="form-group">
                                 <label for="tensp">Tên sản phẩm</label>
                                 <input type="text" id="tensp" class="form-control" name="tensp">
@@ -144,12 +186,20 @@
                                 <input type="file" id="upload" name="upload" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label for="uploads">Upload ảnh mô tả</label>
-                                <input type="file" id="uploads" name="uploads[]" class="form-control" multiple>
+                                <label for="upload1">Upload ảnh mô tả 1</label>
+                                <input type="file" id="upload1" name="upload1" class="form-control" multiple>
+                            </div>
+                            <div class="form-group">
+                                <label for="upload2">Upload ảnh mô tả 2</label>
+                                <input type="file" id="upload2" name="upload2" class="form-control" multiple>
+                            </div>
+                            <div class="form-group">
+                                <label for="upload3">Upload ảnh mô tả 3</label>
+                                <input type="file" id="upload3" name="upload3" class="form-control" multiple>
                             </div>
 
                             <input type="submit" value="Thêm thông tin" class="btn btn-primary">
-                        </div>a
+                        </div>
                     </form>
                 </div>
 
@@ -161,5 +211,3 @@
             </div>
     </div>
 </div>
-
-
