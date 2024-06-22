@@ -2,10 +2,11 @@
 
 // Lấy thông tin sản phẩm từ form
 $madm = $_POST['madm'];
+$danhmuccha = $_POST['danhmuccha'];
 $tendm = $_POST['tendm'];
 
-require_once '../ketnoi.php'; // Kết nối đến cơ sở dữ liệu
-$suasql = "UPDATE danhmuc SET tendm='$tendm' WHERE madm='$madm'";
+require_once '../ketnoi.php';
+$suasql = "UPDATE danhmuc SET tendm='$tendm',danhmuccha='$danhmuccha' WHERE madm='$madm'";
 
 
 if (mysqli_query($conn, $suasql)) {

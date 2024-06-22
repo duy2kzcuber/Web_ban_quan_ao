@@ -1,5 +1,4 @@
 <?php
-// Lấy dữ liệu từ form
 $masp = $_POST['masp'];
 $tensp = $_POST['tensp'];
 $gia = $_POST['gia'];
@@ -11,99 +10,108 @@ $gioithieu = $_POST['gioithieu'];
 $ctsp = $_POST['ctsp'];
 $baoquan = $_POST['baoquan'];
 
-// Kiểm tra nếu các trường bắt buộc không được để trống
 if (!empty($masp) && !empty($tensp) && !empty($gia)) {
-    require_once '../ketnoi.php'; // Kết nối đến cơ sở dữ liệu
+    require_once '../ketnoi.php';
 
-    // Biến để lưu trữ tên ảnh chính và ảnh mô tả
-    $fileName = '';
-    $uploadedFiles = [];
-    $target;
     // Xử lý upload ảnh chính
-    if (!empty($_FILES['upload']['name'])) {
-        $fileNameTemp = $_FILES['upload']['name'];
-        $fileName = str_replace(" ", "", $fileNameTemp); //.rand(100000,999999)
-        $target =  $fileName;
+    $fileNameMain = '';
+    if (isset($_FILES['upload']) && $_FILES['upload']['error'] === UPLOAD_ERR_OK) {
         $fileTmpPath = $_FILES['upload']['tmp_name'];
-        $fileSize = $_FILES['upload']['size'];
-        $fileType = $_FILES['upload']['type'];
-        $fileNameCmps = explode(".", $fileName);
-        $fileExtension = strtolower(end($fileNameCmps));
-
-        // Thư mục lưu trữ ảnh chính
+        $fileNameTemp = $_FILES['upload']['name'];
+        $fileName = str_replace(" ", "", $fileNameTemp);
         $uploadFileDir = './img/';
 
-        // Kiểm tra và tạo thư mục nếu chưa tồn tại
+        // Kiểm tra xem thư mục đích có tồn tại không
         if (!file_exists($uploadFileDir)) {
             mkdir($uploadFileDir, 0777, true);
         }
 
-        $dest_path = $uploadFileDir . $fileName;
+        $fileNameMain = $fileName; // Lưu tên tệp vào biến để lưu vào CSDL
 
-        // Di chuyển ảnh chính vào thư mục đích
-        if (!move_uploaded_file($fileTmpPath, $dest_path)) {
-            echo "Lỗi khi di chuyển ảnh chính " . $fileName . " đến thư mục đích.<br>";
-        }
-    }
-
-    // Xử lý upload ảnh mô tả
-    if (!empty($_FILES['uploads']['name'][0])) {
-        $totalFiles = count($_FILES['uploads']['name']);
-        
-        for ($i = 0; $i < $totalFiles; $i++) {
-            $fileTmpPath = $_FILES['uploads']['tmp_name'][$i];
-            $fileNameTemp = $_FILES['uploads']['name'][$i];
-            $fileName = str_replace(" ", "", $fileNameTemp); //.rand(100000,999999)
-            $fileSize = $_FILES['uploads']['size'][$i];
-            $fileType = $_FILES['uploads']['type'][$i];
-            $fileNameCmps = explode(".", $fileName);
-            $fileExtension = strtolower(end($fileNameCmps));
-
-            // Thư mục lưu trữ ảnh mô tả
-            $uploadFileDir = './anhmota/';
-
-            // Kiểm tra và tạo thư mục nếu chưa tồn tại
-            if (!file_exists($uploadFileDir)) {
-                mkdir($uploadFileDir, 0777, true);
-            }
-
-            $dest_path = $uploadFileDir . $fileName;
-
-            // Di chuyển ảnh mô tả vào thư mục đích
-            if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                $uploadedFiles[] = $fileName;
-            } else {
-                echo "Lỗi khi di chuyển ảnh mô tả " . $fileName . " đến thư mục đích.<br>";
-            }
-        }
-    }
-
-    // Nếu có ảnh chính hoặc ảnh mô tả được upload thành công
-    if (!empty($fileName) || !empty($uploadedFiles)) {
-        // Format chuỗi ảnh mô tả
-
-        // note: đây là toán tử 3 ngôi, nếu lệnh "!empty($uploadedFiles)" đúng thì sẽ chạy đoạn lệnh sau dấu "?", sai chạy đoạn lệnh sau dấu hai chấm
-        $fileNamesString = !empty($uploadedFiles) ? implode(",", $uploadedFiles) : '';
-
-        // Tạo câu lệnh SQL để thêm sản phẩm vào cơ sở dữ liệu
-        $themsql = "INSERT INTO `product` ( `madm`, `tensp`, `gia`, `mausac`, `soluong`, `ngaytao`, `gioithieu`, `ctsp`, `baoquan`, `anh`, `fileanh`) 
-                    VALUES ( '$madm', '$tensp', '$gia', '$mausac', '$soluong', '$ngaytao', '$gioithieu', '$ctsp', '$baoquan', '$target', '$fileNamesString')";
-
-        // Thực thi câu lệnh SQL
-        if (mysqli_query($conn, $themsql)) {
-            // Nếu thêm sản phẩm thành công, chuyển hướng về trang liệt kê sản phẩm
-            header("Location: lietke.php");
+        if (!move_uploaded_file($fileTmpPath, $uploadFileDir . $fileName)) {
+            echo "Lỗi khi di chuyển ảnh chính đến thư mục đích.<br>";
             exit;
-        } else {
-            // Nếu có lỗi SQL, hiển thị thông báo lỗi
-            echo "Lỗi: " . mysqli_error($conn);
         }
+    }
+
+    // Xử lý upload ảnh mô tả 1
+    $fileNameDesc1 = '';
+    if (isset($_FILES['upload1']) && $_FILES['upload1']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['upload1']['tmp_name'];
+        $fileNameTemp = $_FILES['upload1']['name'];
+        $fileName = str_replace(" ", "", $fileNameTemp);
+        $uploadFileDir = './anhmota/';
+
+        // Kiểm tra xem thư mục đích có tồn tại không
+        if (!file_exists($uploadFileDir)) {
+            mkdir($uploadFileDir, 0777, true);
+        }
+
+        $fileNameDesc1 = $fileName; // Lưu tên tệp vào biến để lưu vào CSDL
+
+        if (!move_uploaded_file($fileTmpPath, $uploadFileDir . $fileName)) {
+            echo "Lỗi khi di chuyển ảnh mô tả 1 đến thư mục đích.<br>";
+            exit;
+        }
+    }
+
+    // Xử lý upload ảnh mô tả 2
+    $fileNameDesc2 = '';
+    if (isset($_FILES['upload2']) && $_FILES['upload2']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['upload2']['tmp_name'];
+        $fileNameTemp = $_FILES['upload2']['name'];
+        $fileName = str_replace(" ", "", $fileNameTemp);
+        $uploadFileDir = './anhmota/';
+
+        // Kiểm tra xem thư mục đích có tồn tại không
+        if (!file_exists($uploadFileDir)) {
+            mkdir($uploadFileDir, 0777, true);
+        }
+
+        $fileNameDesc2 = $fileName; // Lưu tên tệp vào biến để lưu vào CSDL
+
+        if (!move_uploaded_file($fileTmpPath, $uploadFileDir . $fileName)) {
+            echo "Lỗi khi di chuyển ảnh mô tả 2 đến thư mục đích.<br>";
+            exit;
+        }
+    }
+
+    // Xử lý upload ảnh mô tả 3
+    $fileNameDesc3 = '';
+    if (isset($_FILES['upload3']) && $_FILES['upload3']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['upload3']['tmp_name'];
+        $fileNameTemp = $_FILES['upload3']['name'];
+        $fileName = str_replace(" ", "", $fileNameTemp);
+        $uploadFileDir = './anhmota/';
+
+        // Kiểm tra xem thư mục đích có tồn tại không
+        if (!file_exists($uploadFileDir)) {
+            mkdir($uploadFileDir, 0777, true);
+        }
+
+        $fileNameDesc3 = $fileName; // Lưu tên tệp vào biến để lưu vào CSDL
+
+        if (!move_uploaded_file($fileTmpPath, $uploadFileDir . $fileName)) {
+            echo "Lỗi khi di chuyển ảnh mô tả 3 đến thư mục đích.<br>";
+            exit;
+        }
+    }
+
+    // Tạo câu lệnh SQL để thêm sản phẩm vào cơ sở dữ liệu
+    $themsql = "INSERT INTO `product` (`masp`, `tensp`, `gia`, `mausac`, `soluong`, `ngaytao`, `madm`, `gioithieu`, `ctsp`, `baoquan`, `anh`, `anhmt1`, `anhmt2`, `anhmt3`) 
+                VALUES ('$masp', '$tensp', '$gia', '$mausac', '$soluong', '$ngaytao', '$madm', '$gioithieu', '$ctsp', '$baoquan', '$fileNameMain', '$fileNameDesc1', '$fileNameDesc2', '$fileNameDesc3')";
+
+    // Thực thi câu lệnh SQL
+    if (mysqli_query($conn, $themsql)) {
+        // Nếu thêm sản phẩm thành công, chuyển hướng về trang liệt kê sản phẩm
+        header("Location: lietke.php");
+        exit;
     } else {
-        // Nếu không có ảnh nào được upload
-        echo "Vui lòng tải lên ảnh chính hoặc ảnh mô tả.";
+        // Nếu có lỗi SQL, hiển thị thông báo lỗi
+        echo "Lỗi: " . mysqli_error($conn);
     }
 } else {
     // Nếu các trường bắt buộc trống
-    echo "Vui lòng điền đầy đủ thông tin.";
+    echo "Vui lòng điền đầy đủ thông tin (mã sản phẩm, tên sản phẩm và giá).";
 }
 ?>
