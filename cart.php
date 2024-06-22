@@ -5,14 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HVTDT.shop</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
     <link rel="stylesheet" href="style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="./index.js"></script>
+    
+    <script src="index.js"></script>
     
 </head>
+<?php 
+    session_start();
+    require_once './admin/ketnoi.php';
+    if (isset($_POST['add_to_cart'])) {
+        // Tạo mảng sản phẩm mới từ dữ liệu POST
+        $new_product = array(
+            'masp' => $_POST['masp'],
+            'tensp' => $_POST['tensp'],
+            'gia' => $_POST['gia'],
+            'mausac' => $_POST['mausac'],
+            'anh' =>  $_POST['anh'],
+            'soluong' => $_POST['soluong']
+        );
+
+        if (isset($_SESSION['cart'])) {
+            $session_array_id = array_column($_SESSION['cart'], "masp");
+            if (in_array($_POST['masp'], $session_array_id)) {
+                // TH1: Sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
+                foreach ($_SESSION['cart'] as $key => $value) {
+                    if ($value['masp'] == $_POST['masp']) {
+                        $_SESSION['cart'][$key]['soluong'] += $_POST['soluong'];
+                        break; // Thoát vòng lặp sau khi tìm thấy và cập nhật sản phẩm
+                    }
+                }
+            } 
+            else {
+                // TH2: Sản phẩm chưa tồn tại trong giỏ hàng, thêm sản phẩm mới
+                $_SESSION['cart'][] = $new_product;
+            }
+        } else {
+            // Giỏ hàng ko tồn tại, tạo giỏ hàng mới và thêm sản phẩm
+            $_SESSION['cart'] = array($new_product);
+        }
+    }
+    if(isset($_GET['action'])){
+        if($_GET['action'] == "clearall"){
+            unset($_SESSION['cart']);
+            
+        }
+        if($_GET['action'] == "remove"){
+            foreach($_SESSION['cart'] as $key => $value){
+                if($value['masp'] == $_GET['masp']){
+                    unset($_SESSION['cart'][$key]);
+                }
+            }
+        }
+         header('Location: cart.php');
+    }
+    global $tong; // luu tong gia tri don hang
+     
+    function hienThi_left(){
+        $sum = 0; global $tong;
+        $output = "";
+        $output .= "
+            <table class = 'table table-bordered table-striped'>
+                <tr>
+                     <th>Mã sản phẩm</th>
+                     <th>Tên sản phẩm</th>
+                     <th>Hình ảnh</th>
+                     <th>Giá</th>
+                     <th>Số lượng</th>
+                     <th>Màu</th>
+                     <th>Tổng giá tiền</th>
+                    <th>Trạng thái</th>
+                 </tr>
+            
+        ";
+        if(!empty($_SESSION['cart'])){
+            foreach($_SESSION['cart'] as $key => $value){
+
+                 $output .= "
+                <tr>
+                    <td>".$value['masp']."</td>
+                    <td>".$value['tensp']."</td>
+                    <td><img src='admin/backend_sanpham/img/".$value['anh']."' alt='".$value['tensp']."' style='width:50px;height:50px;'></td>
+                    <td>".number_format($value['gia'])."</td>
+                    <td>".$value['soluong']."</td>
+                    <td>".$value['mausac']."</td>
+                    <td>".number_format($value['gia'] * $value['soluong']). " VND</td>
+                    <td> 
+                         <a href='cart.php?action=remove&masp=".$value['masp']."'>
+                            <button class = 'btn'>Xóa</button>
+                        </a>
+                    </td>
+                 </tr>
+                 ";
+                 $sum += $value['gia'] * $value['soluong'] ;
+            }
+            $tong = $sum;
+        }
+        $output .= "</table>";
+        echo $output;
+    }   
+    function hienThi_right(){
+        global $tong;
+        $output = "
+        <table>
+            <tr></b> Tổng giá tiền</b></tr>
+            <tr>".number_format($tong)." VNĐ</tr>
+            <tr>
+                <a href ='cart.php?action=clearall'>
+                    <button class ='btn btn-warning' '> Xóa toàn bộ giỏ hàng</button>
+                </a>
+            </tr>
+            <tr>
+                <a href ='cart.php'>
+                    <button class ='btn btn-warning' '> Mua hàng</button>
+                    </a>           
+                </tr>
+        </table>
+        ";
+        echo $output;
+        
+    }
+?>
+
 <body>
-    
+
     <! -- Đây là logo menu và other -->
     <header style="background-color: rgb(253, 252, 252);" >
         <div class="logo">
@@ -170,88 +286,33 @@
         </div>
     </header>
 
-
-
-
-
-
     <br>
     <section class="cart">
-        <div class="container">
-            <div class="cart-top-wrap">
-                <div class="cart-top">
-                    <div class="cart-top-cart cart-top-item">
-                        <i class="fas fa-shopping-cart icon-cart"></i>
-                    </div>
-                    <div class="cart-top-cart cart-top-item">
-                        <i class="fas fa-map-marker-alt icon-location"></i>
-                    </div>
-                    <div class="cart-top-cart cart-top-item">
-                        <i class="fas fa-money-check-alt icon-payment"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
         
         <div class="container">
             <div class="cart-content row">
                 <div class="cart-content-left">
-                    <table>
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Màu</th>
-                            <th>Size</th>
-                            <th>Số lượng</th>
-                            <th>Thành tiền</th>
-                            <th>Xóa</th>
-                        </tr>
-                        <tr>
-                            <td><img src="img/anh1.jpg" alt=""></td>
-                            <td><p>Quần sooc bò đen MS 23E2616</p></td>
-                            <td><img src="img/h1.png" alt=""></td>
-                            <td><p>L</p></td>
-                            <td><input type="number" value="1" min="0"></td>
-                            <td><p>490.000 <sup>đ</sup></p></td>
-                            <td><span>X</span></td>
-                        </tr>
-                    </table>
-                </div>
+                    <div class="container-fluid" style="justify-content: center!important;">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h2 class="text-center" style="text-align: center;">GIỎ HÀNG</h2>  
+                                            <?php hienThi_left(); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
                 <div class="cart-content-right">
-                    <table>
-                        <tr>
-                            <th colspan="2">TỔNG TIỀN GIỎ HÀNG</th>
-                        </tr>
-                        <tr>
-                            <td>TỔNG SẢN PHẨM</td>
-                            <td>2</td>
-                        </tr>
-                        <tr>
-                            <td>TỔNG TIỀN HÀNG</td>
-                            <td><p>490.000<sup>đ</sup></p></td>
-                        </tr>
-                        <tr>
-                            <td>TẠM TÍNH</td>
-                            <td><p style="color: black; font-weight: bold;">490.000<sup>đ</sup></p></td>
-                        </tr>
-                    </table>
-                    <div class="cart-content-right-text">
-                        <p>Bạn sẽ được miễn phí ship khi đơn hàng của bạn có giá trị trên 2.000.000 VNĐ</p>
-                        <p style="color: red; font-weight: bold;">Mua thêm <span style="font-size: 18px; color: red;">131.000đ </span>để được miễn phí ship</p>
-                    </div>
-                    <div class="cart-content-right-button">
-                        <button><a href="cartegory.html"> TIẾP TỤC MUA SẮM</a></button>
-                        <button><a href="thanhtoan.html">THANH TOÁN</a></button>
-                    </div>
-                    <div class="cart-content-right-dangnhap">
-                        <p>Tài khoản IVY</p>
-                        <p>Hãy <a href="">Đăng nhập</a> tài khoản của bạn để tích điểm thành viên</p>
-                    </div>
+                    <?php hienThi_right()?>
                 </div>
             </div>
         </div>
     </section>
-    
+ 
+
+
     <br>
     <br>
     <br>

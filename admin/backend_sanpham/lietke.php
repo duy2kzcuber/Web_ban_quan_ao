@@ -1,6 +1,17 @@
 <?php include "../slider.php"; 
 
 ?>
+    <style>
+        .image-container {
+            display: flex;
+            gap: 10px; /* Khoảng cách giữa các ảnh */
+        }
+
+        .product-image {
+            width: 75px;
+            height: auto;
+        }
+    </style>
     <div class="container">
         <h1>DANH SÁCH SẢN PHẨM</h1>
         <!-- Button to Open the Modal -->
@@ -39,7 +50,9 @@
                 ?>
                 <tr>
                     <td><?php echo $r['masp']; ?></td>
-                    <td><?php echo $r['madm']; ?></td>
+                    <td><?php 
+                       // $dm_sql =  "SELECT * FROM danhmuc WHERE madm = $r[madm] ";
+                    ?></td>
                     <td><?php echo $r['tensp']; ?></td>
                     <td><?php echo $r['gia']; ?></td>
                     <td><?php echo $r['mausac']; ?></td>

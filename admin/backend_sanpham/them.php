@@ -82,7 +82,7 @@ if (!empty($masp) && !empty($tensp) && !empty($gia)) {
     if (!empty($fileName) || !empty($uploadedFiles)) {
         // Format chuỗi ảnh mô tả
 
-        // note: đây là toán tử 3 ngôi, nếu mệnh "!empty($uploadedFiles)" đúng thì sẽ chạy đoạn lệnh sau dấu "?", sai chạy đoạn lệnh sau dấu hai chấm
+        // note: đây là toán tử 3 ngôi, nếu lệnh "!empty($uploadedFiles)" đúng thì sẽ chạy đoạn lệnh sau dấu "?", sai chạy đoạn lệnh sau dấu hai chấm
         $fileNamesString = !empty($uploadedFiles) ? implode(",", $uploadedFiles) : '';
 
         // Tạo câu lệnh SQL để thêm sản phẩm vào cơ sở dữ liệu
