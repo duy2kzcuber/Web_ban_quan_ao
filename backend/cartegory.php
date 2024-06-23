@@ -113,8 +113,8 @@ $result_products = mysqli_query($conn, $query_products);
                             <ul>
                                 <li>
                                     <div class="image-wrapper">
-                                        <img src="../html_backend/img/<?php echo $r['anh']; ?>" alt="">
-                                        <img class="img2" src="../html_backend/anhmota/<?php echo $r['anhmt1']; ?>" alt="">
+                                        <img src="../admin/backend_sanpham/img/<?php echo $r['anh']; ?>" alt="">
+                                        <img class="img2" src="../admin/backend_sanpham/anhmota/<?php echo $r['anhmt1']; ?>" alt="">
                                     </div>
                                 </li>
                                 <li class="description">
