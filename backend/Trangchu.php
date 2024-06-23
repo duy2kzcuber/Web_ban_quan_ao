@@ -22,107 +22,40 @@
         </div>
         <div class="menu">
             <ul>
-                <li class="menu-item">
-                    <a href="">NAM</a>
-                    <ul class="sub-menu">
-                        <li><a href="cartegory.html">Hàng mới về</a></li>
-                        <li><a href="">Áo</a>
-                            <ul>
-                                <li><a href="cartegory.html">Áo Sơ Mi Nam</a></li>
-                                <li><a href="cartegory.html">Áo Polo Nam</a></li>
-                                <li><a href="cartegory.html">Áo Vest Nam</a></li>
-                                <li><a href="cartegory.html">Áo Len Nam</a></li>
-                                <li><a href="cartegory.html">Áo khoác Nam</a></li>
-                                <li><a href="cartegory.html">Áo Bomber Nam</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Quần</a>
-                            <ul>
-                                <li><a href="cartegory.html">Quần Jean Nam</a></li>
-                                <li><a href="cartegory.html">Quần Lửng Nam</a></li>
-                                <li><a href="cartegory.html">Quần Bò NAM</a></li>
-                                <li><a href="cartegory.html">Quần Short Nam</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a>NỮ</a>
-                    <ul class="sub-menu">
-                        <li><a href="cartegory.html">Hàng mới về</a></li>
-                        <li><a href="cartegory.html">Áo</a>
-                            <ul>
-                                <li><a href="cartegory.html">Áo Sơ Mi Nữ</a></li>
-                                <li><a href="cartegory.html">Áo Polo Nữ </a></li>
-                                <li><a href="cartegory.html">Áo Phông Nữ</a></li>
-                                <li><a href="cartegory.html">Áo Len Nữ</a></li>
-                                <li><a href="cartegory.html">Áo khoác Nữ</a></li>
-                                <li><a href="cartegory.html">Áo Dài Nữ</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Quần</a>
-                            <ul>
-                                <li><a href="cartegory.html">Quần Jean Nữ</a></li>
-                                <li><a href="cartegory.html">Quần Ống Rộng Nữ</a></li>
-                                <li><a href="cartegory.html">Quần Bò Nữ</a></li>
-                                <li><a href="cartegory.html">Quần Short Nữ</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a>TRẺ EM</a>
-                    <ul class="sub-menu">
-                        <li><a href="cartegory.html">Hàng mới về</a></li>
-                        <li><a>Áo</a>
-                            <ul>
-                                <li><a href="cartegory.html">Áo Thun Trẻ Em</a></li>
-                                <li><a href="cartegory.html">Áo Polo Trẻ Em </a></li>
-                                <li><a href="cartegory.html">Áo Phông Trẻ Em</a></li>
-                                <li><a href="cartegory.html">Áo Hoodie Trẻ Em</a></li>
-                                <li><a href="cartegory.html">Áo Sweater Trẻ Em</a></li>
-                                <li><a href="cartegory.html">Áo Dài Trẻ Em</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Quần</a>
-                            <ul>
-                                <li><a href="cartegory.html">Quần Jean Trẻ Em</a></li>
-                        
-                                <li><a href="cartegory.html">Quần Bò Trẻ Em</a></li>
-                                <li><a href="cartegory.html">Quần Short Trẻ Em</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="menu-item">
-                    <a>SALE</a>
-                    <ul class="sub-menu">
-                        <li><a href="cartegory.html">SALE 70%</a></li>
-                        <li><a href="cartegory.html">SALE 50%</a></li>
-                        <li><a href="cartegory.html">SALE 30%</a></li>
-                        <li><a href="cartegory.html">SALE 10%</a></li>
-                        </ul>
-                        </li>
-                <li class="menu-item">
-                    <a href="">TRANG SỨC </a>
-                    <ul class="sub-menu">
-                        <li><a href="cartegory.html">Vòng Cổ</a></li>
-                        <li><a href="cartegory.html">Bông Tai</a></li>
-                        <li><a href="cartegory.html">Vòng Tay</a></li>
-                        <li><a href="cartegory.html">Nhẫn</a></li>
-                        <li><a href="cartegory.html">Dây chuyền
-                        </a></li>
-                        </ul>
-                        </li>
-                <li class="menu-item">
-                    <a>COMBO</a>
-                    <ul class="sub-menu">
-                        <li><a href="cartegory.html">SET NAM ĐI BIỂN</a></li>
-                        <li><a href="cartegory.html">SET NỮ PHONG CÁCH</a></li>
-                        <li><a href="cartegory.html">SET TRẺ EM BÓNG BẢY</a></li>
-                        
-                        </ul>
-                        </li>
+            <?php
+// Kết nối đến cơ sở dữ liệu
+include 'admin/ketnoi.php';
+
+// Truy vấn danh sách các danh mục từ bảng danhmuc
+$query = "SELECT * FROM danhmuc";
+$result = mysqli_query($conn, $query);
+
+// Tạo mảng để lưu trữ danh mục theo danh mục cha
+$categories = array();
+while ($category = mysqli_fetch_assoc($result)) {
+    $categories[$category['danhmuccha']][] = $category;
+}
+// Duyệt qua các danh mục cấp 1 (danh mục không có danh mục cha)
+foreach ($categories[0] as $main_category) {
+    echo '<li class="menu-item">';
+    echo '<a href="#">' . $main_category['tendm'] . '</a>';
+    
+    // Kiểm tra xem danh mục cấp 1 có danh mục con không
+    if (isset($categories[$main_category['madm']])) {
+        echo '<ul class="sub-menu">';
+        
+        // Duyệt qua danh mục con của danh mục cấp 1
+        foreach ($categories[$main_category['madm']] as $subcategory) {
+            echo '<li><a href="cartegory.php?tendm=' . urlencode($subcategory['tendm']) . '">' . $subcategory['tendm'] . '</a></li>';
+        }
+        
+        echo '</ul>';
+    }
+    
+    echo '</li>';
+}
+?>
+
                 <li class="menu-item">
                     <a>THÔNG TIN</a>
                     <ul class="sub-menu">
@@ -190,231 +123,430 @@
             <div class="box"><p id="seconds" >00</p></div>  
         </div>
         <script src="index.js"></script>
-       
-            <div class="moda" >
-                
-                <?php
-                require_once 'ketnoi.php';
+        <div class="table">
+            <div  class="content">
+               <ul>
+                <li>
+                <div class="image-wrapper">
+                    <img id="moda-img1" src="img/anh1.jpg" alt="">
+                    <img id="moda-img2" class="img2" src="img/anh2.jpg" alt="">
+                    <div class="sale-icon">-30%</div> 
+                </div>
+                </li>
+                <li class="mau">
+                   <span><img src="img/h09.png" alt=""></span>
+                </li>
+                <li class="description">
+                    <a href="product.html" class="product-name">Đầm Dài Phối Túi Kèm Đai</a>
+                    <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-               
-                $sql_sales = "SELECT p.masp, p.tensp, p.gia, p.anh , p.anhmt1 
-                              FROM product p
-                              INNER JOIN danhmuc d ON p.madm = d.madm
-                              WHERE d.danhmuccha = 'sale'
-                              ORDER BY p.ngaytao DESC
-                              LIMIT 5"; 
-
-                $result_sales = $conn->query($sql_sales);
-
-                if ($result_sales->num_rows > 0) {
-                    while ($row = $result_sales->fetch_assoc()) {
-                        ?>
-                        <div class="">
-                            <ul>
-                                <li>
-                                    <div class="image-wrapper">
-                                        <img src="../html_backend/img/<?php echo $row['anh']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                       
-                                        <img class="img2" src="../html_backend/anhmota/<?php echo $row['anhmt1']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                    </div>
-                                </li>
-                                <li class="description">
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="product-name"><?php echo $row['tensp']; ?></a>
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                                </li>
-                                <li><?php echo number_format($row['gia']); ?>đ</li>
-                            </ul>
-                        </div>
-                        <?php                      
-                    }
-                } else {
-                    echo "Không có sản phẩm Nữ.";
-                }
-
-               
-                ?>
+                </li>
+                <li>1.393.000đ</li>
+               </ul>
             </div>
-    </section>
+            
+            <div  class="content ">
+                <ul>
+                 <li>
+                <div class="image-wrapper">
+                     <img id="men-img1" src="img/anh3.jpg" alt="">
+                     <img id="men-img2" class="img2" src="img/anh4.jpg" alt="">
+                     <div class="sale-icon">-30%</div> 
+                 </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h66.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Đầm Dài Phối Túi Kèm Đai </a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>1.490.000đ</li>
+                </ul>
+             </div>
+    
+             <div  class="content ">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img id="kids-img1" src="img/anh5.jpg" alt="">
+                     <img id="kids-img2" class="img2" src="img/anh6.jpg" alt="">
+                     <div class="sale-icon">-20%</div> 
+                 </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h60.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Lụa Cổ Tàu Trụ </a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>1.650.000đ</li>
+                </ul>
+             </div>
+    
+             <!-- Thêm hai phần tử sản phẩm mới -->
+             <div  class="content">
+                <ul>
+                 <li>
+                <div class="image-wrapper">
+                     <img id="moda-img3" src="img/anh7.jpg" alt="">
+                     <img id="moda-img4" class="img2" src="img/anh8.jpg" alt="">
+                     <div class="sale-icon">-25%</div> 
+                 </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="h09.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Quần Ống Đứng Phối Đai  </a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>1.190.000đ</li>
+                </ul>
+             </div>
+    
+             <div  class="content">
+                <ul>
+                 <li>
+                <div class="image-wrapper">
+                     <img id="moda-img5" src="img/anh9.jpg" alt="">
+                     <img id="moda-img6" class="img2" src="img/anh10.jpg" alt="">
+                     <div class="sale-icon">-15%</div> 
+                 </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h09.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Quần Suông Ống Rộng </a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>1.790.000đ</li>
+                </ul>
+             </div>
+        </div>
+       </section>
 
 
-    <section class="home-new-prod" >
-        <div style="margin-left: 115px">
+       <! -- Đây là new arrival -->
+       <section  style="margin-bottom: 50px" class="home-new-prod">
         <div class="title-section">NEW ARRIVAL</div>
         <br>
         <div class="head">
             <ul>
-                <li><a href="#" class="women-link">VHTDT WOMEN</a></li>
-                <li><a href="#" class="men-link">VHTDT MEN</a></li>
+                <li><a href="#" class="moda-link">VHTDT GIRLS</a></li>
+                <li><a href="#" class="men-link">VHTDT MENS</a></li>
                 <li><a href="#" class="kids-link">VHTDT KIDS</a></li>
             </ul>
-        </div>           
         </div>
-        <div >
-            <div class="moda" id="women-products">
-                <!-- Đây là vùng chứa sản phẩm Nữ -->
-                <?php
-                require_once 'ketnoi.php';
+        <div class="content">
+          <div class="moda">
+            <div class="moda-item">
+               <ul>
+                <li>
+                    <div class="image-wrapper">
+                    <img src="img/anh1.jpg" alt="">
+                    <img class="img2" src="img/anh2.jpg" alt="">
+                    </div>
+                </li>
+                <li class="mau">
+                   <span><img src="img/h1.png" alt=""></span>
+                </li>
+                <li class="description">
+                    <a href="product.html" class="product-name">Đầm Voan Hoa Dáng Xòe</a>
+                    <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                // Truy vấn để lấy các sản phẩm từ danh mục con "Nữ"
-                $sql_women = "SELECT p.masp, p.tensp, p.gia, p.anh , p.anhmt1 
-                              FROM product p
-                              INNER JOIN danhmuc d ON p.madm = d.madm
-                              WHERE d.danhmuccha = 'Nữ'
-                              ORDER BY p.ngaytao DESC
-                              LIMIT 5"; // Lấy 5 sản phẩm mới nhất
-
-                $result_women = $conn->query($sql_women);
-
-                if ($result_women->num_rows > 0) {
-                    while ($row = $result_women->fetch_assoc()) {
-                        ?>
-                        <div class="">
-                            <ul>
-                                <li>
-                                    <div class="image-wrapper">
-                                        <img src="../html_backend/img/<?php echo $row['anh']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                       
-                                        <img class="img2" src="../html_backend/anhmota/<?php echo $row['anhmt1']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                    </div>
-                                </li>
-                                <li class="description">
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="product-name"><?php echo $row['tensp']; ?></a>
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                                </li>
-                                <li><?php echo number_format($row['gia']); ?>đ</li>
-                            </ul>
-                        </div>
-                        <?php                      
-                    }
-                } else {
-                    echo "Không có sản phẩm Nữ.";
-                }
-
-               
-                ?>
+                </li>
+                <li>1.490.000đ</li>
+               </ul>
             </div>
-            <div class="moda" id="men-products" style="display:none;">
-                <!-- Đây là vùng chứa sản phẩm Nam -->
-                <?php
-                // Kết nối tới cơ sở dữ liệu
-               
+            <div class="moda-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh3.jpg" alt="">
+                     <img class="img2" src="img/anh4.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h2.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Đầm Hoa Xòe Tay Lỡ</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                // Truy vấn để lấy các sản phẩm từ danh mục con "Nam"
-                $sql_men = "SELECT p.masp, p.tensp, p.gia, p.anh, p.anhmt1
-                             FROM product p
-                             INNER JOIN danhmuc d ON p.madm = d.madm
-                             WHERE d.danhmuccha = 'Nam'
-                             ORDER BY p.ngaytao DESC
-                             LIMIT 5"; // Lấy 5 sản phẩm mới nhất
+                 </li>
+                 <li>1.790.000đ</li>
+                </ul>
+             </div>
+    
+             <div class="moda-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh5.jpg" alt="">
+                     <img class="img2" src="img/anh6.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h3.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Đầm Maxi Họa Tiết
+                    </a>
+                    <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                $result_men = $conn->query($sql_men);
+                 </li>
+                 <li>1.790.000đ</li>
+                </ul>
+             </div>
+             <div class="moda-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh7.jpg" alt="">
+                     <img class="img2" src="img/anh8.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h4.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Đầm Linen Dáng Maxi</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                if ($result_men->num_rows > 0) {
-                    while ($row = $result_men->fetch_assoc()) {
-                        ?>
-                        <div class="">
-                            <ul>
-                                <li>
-                                    <div class="image-wrapper">
-                                        <img src="../html_backend/img/<?php echo $row['anh']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                       
-                                        <img class="img2" src="../html_backend/anhmota/<?php echo $row['anhmt1']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                    </div>
-                                </li>
-                                <li class="description">
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="product-name"><?php echo $row['tensp']; ?></a>
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                                </li>
-                                <li><?php echo number_format($row['gia']); ?>đ</li>
-                            </ul>
-                        </div>
-                        <?php                            
-                    }
-                } else {
-                    echo "Không có sản phẩm Nam.";
-                }
+                 </li>
+                 <li>1.890.000đ</li>
+                </ul>
+             </div>
+             <div class="moda-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh9.jpg" alt="">
+                     <img class="img2" src="img/anh10.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h5.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Brume Dress - Đầm Tencel Bèo Nhún</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
+                 </li>
+                 <li>2.290.000đ</li>
+                </ul>
+             </div>
              
-                ?>
+           </div> 
+           <!-- Đóng div moda -->
+           <div class="men hidden">
+            <div class="men-item">
+               <ul>
+                <li>
+                    <div class="image-wrapper">
+                    <img src="img/anh11.jpg" alt="">
+                    <img class="img2" src="img/anh12.jpg" alt="">
+                    </div>
+                </li>
+                <li class="mau">
+                   <span><img src="img/h5.png" alt=""></span>
+                </li>
+                <li class="description">
+                    <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                    <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                </li>
+                <li>375.000đ</li>
+               </ul>
             </div>
-            <div class="moda" id="kids-products" style="display:none;">
-                <!-- Đây là vùng chứa sản phẩm Trẻ em -->
-                <?php
-              
+            <div class="men-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh13.jpg" alt="">
+                     <img class="img2" src="img/anh14.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h5.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                // Truy vấn để lấy các sản phẩm từ danh mục con "Trẻ em"
-                $sql_kids = "SELECT p.masp, p.tensp, p.gia, p.anh ,p.anhmt1
-                             FROM product p
-                             INNER JOIN danhmuc d ON p.madm = d.madm
-                             WHERE d.danhmuccha = 'Trẻ em'
-                             ORDER BY p.ngaytao DESC
-                             LIMIT 5"; // Lấy 5 sản phẩm mới nhất
+                 </li>
+                 <li>375.000đ</li>
+                </ul>
+             </div>
+    
+             <div class="men-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh15.jpg" alt="">
+                     <img class="img2" src="img/anh16.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h1.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Sơ Mi Regular Tay Dài</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                $result_kids = $conn->query($sql_kids);
+                 <li>625.000đ</li>
+                </ul>
+             </div>
+             <div class="men-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh17.jpg" alt="">
+                     <img class="img2" src="img/anh18.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h3.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Thun Regular In Hình</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                if ($result_kids->num_rows > 0) {
-                    while ($row = $result_kids->fetch_assoc()) {
-                        ?>
-                        <div class="" >
-                            <ul>
-                                <li>
-                                    <div class="image-wrapper">
-                                        <img src="../html_backend/img/<?php echo $row['anh']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                       
-                                        <img class="img2" src="../html_backend/anhmota/<?php echo $row['anhmt1']; ?>" alt="<?php echo $row['tensp']; ?>">
-                                    </div>
-                                </li>
-                                <li class="description">
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="product-name"><?php echo $row['tensp']; ?></a>
-                                    <a href="product.php?masp=<?php echo $row['masp']; ?>" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
-                                </li>
-                                <li><?php echo number_format($row['gia']); ?>đ</li>
-                            </ul>
-                        </div>
-                        <?php                            
-                    }
-                } else {
-                    echo "Không có sản phẩm Trẻ em.";
-                }
+                 </li>
+                 <li>375.000đ</li>
+                </ul>
+             </div>
+             <div class="men-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh19.jpg" alt="">
+                     <img class="img2" src="img/anh20.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h2.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Sơ Mi Regular Tay Dài</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
 
-                $conn->close();
-                ?>
+                 </li>
+                 <li>625.000đ</li>
+                </ul>
+             </div>
+             
+           </div> 
+           <!-- Đóng div men -->
+           
+           <div class="kids hidden">
+            <div class="kids-item">
+               <ul>
+                <li>
+                    <div class="image-wrapper">
+                    <img src="img/anh21.jpg" alt="">
+                    <img class="img2" src="img/anh22.jpg" alt="">
+                    </div>
+                </li>
+                <li class="mau">
+                   <span><img src="img/h1.png" alt=""></span>
+                </li>
+                <li class="description">
+                    <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                    <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping"></i></a>
+                </li>
+                <li>375.000đ</li>
+               </ul>
             </div>
+            <div class="kids-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh23.jpg" alt="">
+                     <img class="img2" src="img/anh24.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h1.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>375.000đ</li>
+                </ul>
+             </div>
+             <div class="kids-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh25.jpg" alt="">
+                     <img class="img2" src="img/anh26.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h1.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>375.000đ</li>
+                </ul>
+             </div>
+             <div class="kids-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/anh27.jpg" alt="">
+                     <img class="img2" src="img/anh28.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h1.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>375.000đ</li>
+                </ul>
+             </div>
+             <div class="kids-item">
+                <ul>
+                 <li>
+                     <div class="image-wrapper">
+                     <img src="img/29.jpg" alt="">
+                     <img class="img2" src="img/anh30.jpg" alt="">
+                     </div>
+                 </li>
+                 <li class="mau">
+                    <span><img src="img/h1.png" alt=""></span>
+                 </li>
+                 <li class="description">
+                     <a href="product.html" class="product-name">Áo Thun Your Dream</a>
+                     <a href="product.html" class="cart-icon"><i class="fa-solid fa-cart-shopping icon-white"></i></a>
+
+                 </li>
+                 <li>375.000đ</li>
+                </ul>
+             </div>
+             
+          </div>
         </div>
-    </section>
-
-    <script>
-        // JavaScript code to handle click events (optional)
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelector(".women-link").addEventListener("click", function(event) {
-                event.preventDefault();
-                hideAllProducts();
-                document.getElementById("women-products").style.display = "flex";
-            });
-
-            document.querySelector(".men-link").addEventListener("click", function(event) {
-                event.preventDefault();
-                hideAllProducts();
-                document.getElementById("men-products").style.display = "flex";
-            });
-
-            document.querySelector(".kids-link").addEventListener("click", function(event) {
-                event.preventDefault();
-                hideAllProducts();
-                document.getElementById("kids-products").style.display = "flex";
-            });
-
-            function hideAllProducts() {
-                document.getElementById("women-products").style.display = "none";
-                document.getElementById("men-products").style.display = "none";
-                document.getElementById("kids-products").style.display = "none";
-            }
-        });
-    </script>
-
-
-<br>
-<button class="show-more">Xem tất cả</button>
+        <br>
+        <button class="show-more">Xem tất cả</button>
+       </section>
 
        <! -- Đây là PHẦN ẢNH Ở DƯỚI -->
        <img>

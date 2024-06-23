@@ -1,15 +1,23 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="./index.js"></script>
-</head>
-<body>
+<?php
+// Bắt đầu session nếu chưa tồn tại
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Kết nối CSDL
+require_once 'ketnoi.php';
+
+// Khai báo hàm lấy danh mục sản phẩm
+function fetchCategories($conn) {
+    $query_categories = "SELECT * FROM danhmuc";
+    $result_categories = mysqli_query($conn, $query_categories);
+    $categories = array();
+    while ($category = mysqli_fetch_assoc($result_categories)) {
+        $categories[$category['danhmuccha']][] = $category;
+    }
+    return $categories;
+}
+?>
 
 <header style="background-color: rgb(253, 252, 252);">
     <div class="logo">
@@ -20,22 +28,15 @@
     <div class="menu">
         <ul>
             <?php
-            require_once 'ketnoi.php';
-
-            // Fetch categories
-            $query_categories = "SELECT * FROM danhmuc";
-            $result_categories = mysqli_query($conn, $query_categories);
-            $categories = array();
-            while ($cartegory = mysqli_fetch_assoc($result_categories)) {
-                $categories[$cartegory['danhmuccha']][] = $cartegory;
-            }
+            // Sử dụng hàm lấy danh mục sản phẩm
+            $categories = fetchCategories($conn);
 
             foreach ($categories as $main_category_name => $subcategories) {
-                echo '<li class="menu-item"><a href="cartegory.php?tendm=' . urlencode($main_category_name) . '">' . $main_category_name . '</a>';
+                echo '<li class="menu-item"><a href="category.php?tendm=' . urlencode($main_category_name) . '">' . $main_category_name . '</a>';
                 if (!empty($subcategories)) {
                     echo '<ul class="sub-menu">';
                     foreach ($subcategories as $subcategory) {
-                        echo '<li><a href="cartegory.php?tendm=' . urlencode($subcategory['tendm']) . '">' . $subcategory['tendm'] . '</a></li>';
+                        echo '<li><a href="category.php?tendm=' . urlencode($subcategory['tendm']) . '">' . $subcategory['tendm'] . '</a></li>';
                     }
                     echo '</ul>';
                 }
@@ -45,14 +46,14 @@
             <li class="menu-item">
                 <a>THÔNG TIN</a>
                 <ul class="sub-menu">
-                    <li><a href="tuvansize.html">Tư vấn size</a></li>
-                    <li><a href="chinhsachdieukhoan.html">Chính sách điều khoản</a></li>
-                    <li><a href="huongdanmuahang.html">Hướng dẫn mua hàng</a></li>
-                    <li><a href="chinhsachthanhtoan.html">Chính sách thanh toán</a></li>
-                    <li><a href="chinhsachdoitra.html">Chính sách đổi trả</a></li>
-                    <li><a href="chinhsachbaohanh.html">Chính sách bảo hành</a></li>
-                    <li><a href="chinhsachgiaohang.html">Chính sách giao nhận vận chuyển</a></li>
-                    <li><a href="hethongcuahang.html">Hệ thống cửa hàng </a></li>
+                    <li><a href="size-guide.html">Tư vấn size</a></li>
+                    <li><a href="terms-and-conditions.html">Chính sách điều khoản</a></li>
+                    <li><a href="shopping-guide.html">Hướng dẫn mua hàng</a></li>
+                    <li><a href="payment-policy.html">Chính sách thanh toán</a></li>
+                    <li><a href="return-policy.html">Chính sách đổi trả</a></li>
+                    <li><a href="warranty-policy.html">Chính sách bảo hành</a></li>
+                    <li><a href="shipping-policy.html">Chính sách giao nhận vận chuyển</a></li>
+                    <li><a href="store-locations.html">Hệ thống cửa hàng </a></li>
                 </ul>
             </li>
         </ul>
@@ -79,10 +80,8 @@
                 </ul>
             </li>
             <li>
-                <a href="Dangnhap.html"><i class="fas fa-user black"></i></a>
+                <a href="login.html"><i class="fas fa-user black"></i></a>
             </li>
         </ul>
     </div>
 </header>
-</body>
-</html>
