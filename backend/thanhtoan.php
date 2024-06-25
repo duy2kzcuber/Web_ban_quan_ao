@@ -1,3 +1,24 @@
+<?php
+session_start();
+
+function saveCartToCookies() {
+    $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
+    $cart_serialized = json_encode($cart);
+    setcookie('cart', $cart_serialized, time() + (86400 * 30), '/');
+    session_regenerate_id(true);
+}
+
+if (!isset($_SESSION['cart']) && isset($_COOKIE['cart'])) {
+    $_SESSION['cart'] = json_decode($_COOKIE['cart'], true);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    unset($_SESSION['cart']);
+    saveCartToCookies();
+    // Process payment and customer details
+    // For simplicity, assume processing here
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,334 +126,225 @@
         .summary .total {
             font-weight: bold;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <form action="">
-        <div class="container">
-            <div class="left">
-                <div class="box">
-                    <h2>Thông Tin Khách Hàng</h2>
-                    <label for="hoten">Họ tên:</label>
-                    <input type="text" id="hoten" name="tenkh" placeholder="Nhập họ tên">
-                    <label for="SDT">Số điện thoại:</label>
-                    <input type="text" id="SDT" name="sdt" placeholder="Nhập SDT">
-                    <label for="tinh">Tỉnh/Thành phố:</label>
-                    <select id="tinh" name="tinh">
-                        <option value="">Chọn tỉnh/thành phố</option>
-                        <option value="tinh1">Hà Nội</option>
-                        <option value="tinh2">TP. Hồ Chí Minh</option>
-                        <option value="tinh3">Thái Bình</option>
-                        <option value="tinh4">Đắk Lắk</option>
-                    </select>
-                    <label for="huyen">Quận/Huyện:</label>
-                    <select id="huyen" name="huyen">
-                        <option value="">Chọn quận/huyện</option>
-                    </select>
-                    <label for="xa">Phường/Xã:</label>
-                    <select id="xa" name="xa">
-                        <option value="">Chọn phường/xã</option>
-                    </select>
-                    <label for="address">Địa chỉ:</label>
-                    <textarea id="address" name="dc" placeholder="Nhập địa chỉ" rows="4"></textarea>
-                </div>
-                <div class="box">
-                    <h2>Thông Tin Thanh Toán</h2>
-                    <label for="payment-method">Phương Thức Thanh Toán:</label>
-                    <select id="payment-method" name="payment-method" onchange="togglePaymentMethod(this.value)" required>
-                        <option value="">Chọn phương thức thanh toán</option>
-                        <option value="credit-card">Thẻ Tín Dụng</option>
-                        <option value="bank-transfer">Chuyển Khoản Ngân Hàng</option>
-                        <option value="cod">Thanh Toán Khi Nhận Hàng</option>
-                    </select>
-                    <div id="credit-card-info" style="display: none;">
-                        <label for="card-name">Tên trên Thẻ:</label>
-                        <input type="text" id="card-name" name="card-name">
-                        <label for="card-number">Số Thẻ:</label>
-                        <input type="text" id="card-number" name="card-number">
-                        <label for="exp-month">Tháng Hết Hạn:</label>
-                        <input type="text" id="exp-month" name="exp-month">
-                        <label for="exp-year">Năm Hết Hạn:</label>
-                        <input type="text" id="exp-year" name="exp-year">
-                        <label for="cvv">CVV:</label>
-                        <input type="text" id="cvv" name="cvv">
-                    </div>
-                    <div id="bank-transfer-info" style="display: none;">
-                        <label for="bank-account-name">Tên Tài Khoản:</label>
-                        <input type="text" id="bank-account-name" name="bank-account-name">
-                        <label for="bank-account-number">Số Tài Khoản:</label>
-                        <input type="text" id="bank-account-number" name="bank-account-number">
-                        <label for="bank-name">Tên Ngân Hàng:</label>
-                        <input type="text" id="bank-name" name="bank-name">
-                        <label for="bank-routing-number">Số Thẻ Ngân Hàng:</label>
-                        <input type="text" id="bank-routing-number" name="bank-routing-number">
-                    </div>
-                </div>
-            </div>
-            <div class="right">
-                <button class="btn1" onclick="toggleCartDetails()" type="button">Hiển Thị Sản Phẩm</button>
-                <div class="cart-container" id="cart-container">
-                    <div class="cart-details">
-                        <h2>Giỏ hàng của bạn</h2>
-                        <table>
-                            <tr>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Số Lượng</th>
-                                <th>Tổng Tiền</th>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <img src="https://via.placeholder.com/100" alt="Sản phẩm">
-                                    <p>Đầm xoè thắt dây eo</p>
-                                    <p>Màu sắc: Họa tiết Size: L</p>
-                                    <p>Vàng bò</p>
-                                </td>
-                                <td>
-                                    <input type="text" class="quantity-input" value="1" readonly>
-                                </td>
-                                <td>1.272.000đ</td>
-                            </tr>
-                            <tr>
-                            <tr>
-                                <td>
-                                    <img src="https://via.placeholder.com/100" alt="Sản phẩm">
-                                    <p>Đầm xoè thắt dây eo</p>
-                                    <p>Màu sắc: Họa tiết Size: L</p>
-                                    <p>Vàng b
-                                    </td>
-                                <td>
-                                    <input type="text" class="quantity-input" value="1" readonly>
-                                </td>
-                                <td>1.272.000đ</td>
-                            </tr>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="summary-box">
-                    <h3>Tóm tắt đơn hàng</h3>
-                    <p>Tiền hàng: 1.272.000đ</p>
-                    <p>Phí vận chuyển: 38.000đ</p>
-                    <p class="total">Tiền thanh toán: 1.310.000đ</p>
-                    <a href="donhang.php" class="btn1">Đặt Hàng</a>
-
-                </div>
+<div class="container">
+    <div class="left">
+        <div class="box">
+            <h2>Thông Tin Khách Hàng</h2>
+            <label for="hoten">Họ tên:</label>
+            <input type="text" id="hoten" name="tenkh" placeholder="Nhập họ tên" required>
+            <label for="SDT">Số điện thoại:</label>
+            <input type="text" id="SDT" name="sdt" placeholder="Nhập số điện thoại" required>
+            <label for="tinh">Tỉnh/Thành phố:</label>
+            <select id="tinh" name="tinh" onchange="loadQuanHuyen(this.value)" required>
+                <option value="">Chọn tỉnh/thành phố</option>
+                <!-- Options will be populated dynamically using JavaScript -->
+            </select>
+            <label for="huyen">Quận/Huyện:</label>
+            <select id="huyen" name="huyen" onchange="loadPhuongXa(document.getElementById('tinh').value, this.value)" required>
+                <option value="">Chọn quận/huyện</option>
+                <!-- Options will be populated dynamically using JavaScript -->
+            </select>
+            <label for="xa">Phường/Xã:</label>
+            <select id="xa" name="xa" required>
+                <option value="">Chọn phường/xã</option>
+                <!-- Options will be populated dynamically using JavaScript -->
+            </select>
+            <label for="address">Địa chỉ:</label>
+            <textarea id="address" name="dc" placeholder="Nhập địa chỉ" rows="4" required></textarea>
+        </div>
+        <div class="box">
+            <h2>Thông Tin Thanh Toán</h2>
+            <label for="payment-method">Phương Thức Thanh Toán:</label>
+            <select id="payment-method" name="payment-method" onchange="togglePaymentMethod(this.value)" required>
+                <option value="">Chọn phương thức thanh toán</option>
+                <option value="online-payment">Thanh Toán Online</option>
+                <option value="cod">Thanh Toán Khi Nhận Hàng</option>
+            </select>
+            <div id="qr-code" style="display: none;">
+                <h3>Quét mã QR để thanh toán</h3>
+                <img src="img/qrr.jpg" alt="QR Code" width="200">
+                <p>Cảm ơn bạn đã mua hàng!</p>
             </div>
         </div>
-    </form>
-    <script>
-        var tinhThanhPhoData = {
-            "tinh1": {
-                "name": "Hà Nội",
-                "huyen": {
-                    "quan1": {
-                        "name": "Quận Ba Đình",
-                        "xa": {
-                            "phuong1": "Phường Trúc Bạch",
-                            "phuong2": "Phường Ngọc Hà"
+    </div>
+    <div class="right">
+        <button class="btn1" onclick="toggleCart()">Hiển thị/Ẩn giỏ hàng</button>
+        <div class="cart-details" id="cart-details">
+            <h2>Giỏ hàng của bạn</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Số Lượng</th>
+                        <th>Size</th>
+                        <th>Tổng Tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $totalAmount = 0;
+                    if (!empty($_SESSION['cart'])) {
+                        foreach ($_SESSION['cart'] as $key => $product) {
+                            $subtotal = floatval($product['gia']) * intval($product['soluong']);
+                            $totalAmount += $subtotal;
+                    ?>
+                            <tr>
+                                <td>
+                                    <img src="../admin/backend_sanpham/img/<?php echo $product['anh']; ?>" alt="Product">
+                                    <p><?php echo $product['tensp']; ?></p>
+                                    
+                                </td>
+                                
+                                <td><?php echo $product['soluong']; ?></td>
+                                <td><?php echo $product['size']; ?></td>
+                                <td><?php echo number_format($subtotal) . 'đ'; ?></td>
+                            </tr>
+                    <?php
                         }
-                    },
-                    "quan2": {
-                        "name": "Quận Hoàn Kiếm",
-                        "xa": {
-                            "phuong3": "Phường Phúc Tân",
-                            "phuong4": "Phường Đồng Xuân"
-                        }
-                    },
-                    "quan3": {
-                        "name": "Quận Hai Bà Trưng",
-                        "xa": {
-                            "phuong5": "Phường Bách Khoa",
-                            "phuong6": "Phường Thanh Lương"
-                        }
-                    },
-                    "quan4": {
-                        "name": "Quận Đống Đa",
-                        "xa": {
-                            "phuong7": "Phường Cát Linh",
-                            "phuong8": "Phường Khâm Thiên"
-                        }
+                    } else {
+                        echo '<tr><td colspan="3">Giỏ hàng của bạn đang trống.</td></tr>';
                     }
-                }
-            },
-            "tinh2": {
-                "name": "TP. Hồ Chí Minh",
-                "huyen": {
-                    "quan5": {
-                        "name": "Quận 1",
-                        "xa": {
-                            "phuong9": "Phường Tân Định",
-                            "phuong10": "Phường Bến Nghé"
-                        }
-                    },
-                    "quan6": {
-                        "name": "Quận 2",
-                        "xa": {
-                            "phuong11": "Phường Thảo Điền",
-                            "phuong12": "Phường An Phú"
-                        }
-                    },
-                    "quan7": {
-                        "name": "Quận 5",
-                        "xa": {
-                            "phuong13": "Phường 15",
-                            "phuong14": "Phường 10"
-                        }
-                    },
-                    "quan8": {
-                        "name": "Quận Bình Thạnh",
-                        "xa": {
-                            "phuong15": "Phường 11",
-                            "phuong16": "Phường 13"
-                        }
+                    ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">Tổng tiền hàng:</td>
+                        <td><?php echo number_format($totalAmount) . 'đ'; ?></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Tổng tiền thanh toán:</td>
+                        <td><?php echo number_format($totalAmount) . 'đ'; ?></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="summary-box">
+            <h3>Tóm tắt đơn hàng</h3>
+            <p>Tiền hàng: <?php echo number_format($totalAmount) . 'đ'; ?></p>
+            <p>Phí vận chuyển: 0đ</p>
+            <p class="total">Tổng cộng: <?php echo number_format($totalAmount) . 'đ'; ?></p>
+            <button type="submit">Đặt hàng</button>
+        </div>
+    </div>
+</div>
+<script>
+    var tinhThanhPhoData = {
+        "tinh1": {
+            "name": "Hà Nội",
+            "huyen": {
+                "quan1": {
+                    "name": "Quận Ba Đình",
+                    "xa": {
+                        "phuong1": "Phường Cống Vị",
+                        "phuong2": "Phường Điện Biên",
+                        "phuong3": "Phường Đội Cấn"
                     }
-                }
-            },
-            "tinh3": {
-                "name": "Thái Bình",
-                "huyen": {
-                    "huyen1": {
-                        "name": "Huyện Quỳnh Phụ",
-                        "xa": {
-                            "xa1": "Thị trấn Quỳnh Lưu",
-                            "xa2": "Xã Quỳnh Lập"
-                        }
-                    },
-                    "huyen2": {
-                        "name": "Huyện Kiến Xương",
-                        "xa": {
-                            "xa3": "Thị trấn Kiến Thụy",
-                            "xa4": "Xã Kiến Trung"
-                        }
-                    },
-                    "huyen3": {
-                        "name": "Huyện Vũ Thư",
-                        "xa": {
-                            "xa5": "Thị trấn Đông Hưng",
-                            "xa6": "Xã Vũ Đông"
-                        }
-                    }
-                }
-            },
-            "tinh4": {
-                "name": "Đắk Lắk",
-                "huyen": {
-                    "huyen4": {
-                        "name": "Thành phố Buôn Ma Thuột",
-                        "xa": {
-                            "xa7": "Phường Thắng Lợi",
-                            "xa8": "Phường Tân Lập"
-                        }
-                    },
-                    "huyen5": {
-                        "name": "Huyện Krông Buk",
-                        "xa": {
-                            "xa9": "Thị trấn Buôn Trấp",
-                            "xa10": "Xã Ea Tu"
-                        }
-                    },
-                    "huyen6": {
-                        "name": "Huyện Ea Kar",
-                        "xa": {
-                            "xa11": "Thị trấn Ea Kar",
-                            "xa12": "Xã Ea Kao"
-                        }
+                },
+                "quan2": {
+                    "name": "Quận Hoàn Kiếm",
+                    "xa": {
+                        "phuong1": "Phường Chương Dương",
+                        "phuong2": "Phường Cửa Đông",
+                        "phuong3": "Phường Cửa Nam"
                     }
                 }
             }
-        };
-
-        var tinhSelect = document.getElementById('tinh');
-        var huyenSelect = document.getElementById('huyen');
-        var xaSelect = document.getElementById('xa');
-
-        // Clear existing options in select elements
-        function clearSelectOptions(selectElement) {
-            selectElement.innerHTML = '<option value="">Chọn tỉnh/thành phố</option>';
-        }
-
-        // Load province data into tinhSelect
-        function loadTinhThanhPho() {
-            clearSelectOptions(tinhSelect);
-            for (var tinh in tinhThanhPhoData) {
-                var option = document.createElement('option');
-                option.value = tinh;
-                option.textContent = tinhThanhPhoData[tinh].name;
-                tinhSelect.appendChild(option);
-            }
-        }
-
-        // Load district data into huyenSelect based on selected province
-        function loadQuanHuyen(selectedTinh) {
-            clearSelectOptions(huyenSelect);
-            xaSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
-
-            if (selectedTinh !== '') {
-                var huyenData = tinhThanhPhoData[selectedTinh].huyen;
-                for (var huyen in huyenData) {
-                    var option = document.createElement('option');
-                    option.value = huyen;
-                    option.textContent = huyenData[huyen].name;
-                    huyenSelect.appendChild(option);
+        },
+        "tinh2": {
+            "name": "Hồ Chí Minh",
+            "huyen": {
+                "quan1": {
+                    "name": "Quận 1",
+                    "xa": {
+                        "phuong1": "Phường Bến Nghé",
+                        "phuong2": "Phường Bến Thành",
+                        "phuong3": "Phường Cô Giang"
+                    }
+                },
+                "quan2": {
+                    "name": "Quận 3",
+                    "xa": {
+                        "phuong1": "Phường 1",
+                        "phuong2": "Phường 2",
+                        "phuong3": "Phường 3"
+                    }
                 }
             }
         }
+    };
 
-        // Load ward data into xaSelect based on selected district
-        function loadPhuongXa(selectedTinh, selectedHuyen) {
-            xaSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+    function loadTinhThanhPho() {
+        var tinhSelect = document.getElementById("tinh");
+        for (var tinhId in tinhThanhPhoData) {
+            var tinh = tinhThanhPhoData[tinhId];
+            var option = document.createElement("option");
+            option.value = tinhId;
+            option.text = tinh.name;
+            tinhSelect.appendChild(option);
+        }
+    }
 
-            if (selectedTinh !== '' && selectedHuyen !== '') {
-                var xaData = tinhThanhPhoData[selectedTinh].huyen[selectedHuyen].xa;
-                for (var xa in xaData) {
-                    var option = document.createElement('option');
-                    option.value = xa;
-                    option.textContent = xaData[xa];
-                    xaSelect.appendChild(option);
-                }
+    function loadQuanHuyen(tinhId) {
+        var huyenSelect = document.getElementById("huyen");
+        huyenSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+        var xaSelect = document.getElementById("xa");
+        xaSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+        if (tinhId) {
+            var huyenData = tinhThanhPhoData[tinhId].huyen;
+            for (var huyenId in huyenData) {
+                var huyen = huyenData[huyenId];
+                var option = document.createElement("option");
+                option.value = huyenId;
+                option.text = huyen.name;
+                huyenSelect.appendChild(option);
             }
         }
+    }
 
-        // Event listener for province dropdown change
-        tinhSelect.addEventListener('change', function() {
-            var selectedTinh = this.value;
-            loadQuanHuyen(selectedTinh);
-        });
+    function loadPhuongXa(tinhId, huyenId) {
+        var xaSelect = document.getElementById("xa");
+        xaSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
 
-        // Event listener for district dropdown change
-        huyenSelect.addEventListener('change', function() {
-            var selectedTinh = tinhSelect.value;
-            var selectedHuyen = this.value;
-            loadPhuongXa(selectedTinh, selectedHuyen);
-        });
-
-        // Function to toggle payment method fields visibility
-        function togglePaymentMethod(method) {
-            var creditCardInfo = document.getElementById('credit-card-info');
-            var bankTransferInfo = document.getElementById('bank-transfer-info');
-
-            creditCardInfo.style.display = 'none';
-            bankTransferInfo.style.display = 'none';
-
-            if (method === 'credit-card') {
-                creditCardInfo.style.display = 'block';
-            } else if (method === 'bank-transfer') {
-                bankTransferInfo.style.display = 'block';
+        if (tinhId && huyenId) {
+            var xaData = tinhThanhPhoData[tinhId].huyen[huyenId].xa;
+            for (var xaId in xaData) {
+                var xa = xaData[xaId];
+                var option = document.createElement("option");
+                option.value = xaId;
+                option.text = xa;
+                xaSelect.appendChild(option);
             }
         }
+    }
 
-        // Function to toggle cart details visibility
-        function toggleCartDetails() {
-            var cartContainer = document.getElementById('cart-container');
-            if (cartContainer.style.display === 'none') {
-                cartContainer.style.display = 'block';
-            } else {
-                cartContainer.style.display = 'none';
-            }
+    function togglePaymentMethod(paymentMethod) {
+        var qrCodeSection = document.getElementById("qr-code");
+        if (paymentMethod === "online-payment") {
+            qrCodeSection.style.display = "block";
+        } else {
+            qrCodeSection.style.display = "none";
         }
+    }
 
-        // Initialize the province dropdown on page load
+    function toggleCart() {
+        var cartDetails = document.getElementById("cart-details");
+        if (cartDetails.style.display === "none" || cartDetails.style.display === "") {
+            cartDetails.style.display = "block";
+        } else {
+            cartDetails.style.display = "none";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
         loadTinhThanhPho();
-    </script>
+    });
+</script>
 </body>
 </html>

@@ -69,7 +69,7 @@ $result_products = mysqli_query($conn, $query_products);
 <section class="cartegory">
     <div class="container">
         <div class="cartegory-top rowe">
-            <p><a href="index.php">Trang chủ</a></p><span>&raquo;</span> <p><?php echo $tendm ? $tendm : 'Tất cả sản phẩm'; ?></p>
+            <p><a href="Trangchu.php">Trang chủ</a></p><span>&#10230;</span><p><?php echo $tendm ? $tendm : 'Tất cả sản phẩm'; ?></p>
         </div>
     </div>
     <div class="container">

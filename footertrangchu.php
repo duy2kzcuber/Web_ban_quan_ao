@@ -34,22 +34,22 @@
         <div class="footer_content">
             <h3>Giới thiệu</h3>
             <ul>
-                <li><a href="gioithieu.html">Về HVTDT </a></li>
+                <li><a href="../frontend/gioithieu.php">Về HVTDT </a></li>
                 <li><a href="">Tuyển dụng</a></li>
                 
             </ul>
         </div>
         <div class="footer_content">
             <h3>Dịch Vụ Khách Hàng</h3>
-            <li><a href="chinhsachdieukhoan.html">Chính sách điểu khoản </a></li>
-            <li><a href="huongdanmuahang.html">Hướng dẫn mua hàng</a></li>
-            <li><a href="chinhsachthanhtoan.html">Chính sách thanh toán</a></li>
-            <li><a href="chinhsachdoitra.html">Chính sách đổi trả</a></li>
-            <li><a href="chinhsachbaohanh.html">Chính sách bảo hành</a></li>
-            <li><a href="chinhsachgiaohang.html">Chính sách giao nhận vận chuyển</a></li>
-            <li><a href="chinhsachnhanvien.html">Chính sách trẻ thành viên</a></li>
-            <li><a href="hethongcuahang.html">Hệ thống cửa hàng</a></li>
-            <li><a href="QnA.html">Q&A</a></li>             
+            <li><a href="../frontend/chinhsachdieukhoan.php">Chính sách điểu khoản </a></li>
+            <li><a href="../frontend/huongdanmuahang.php">Hướng dẫn mua hàng</a></li>
+            <li><a href="../frontend/chinhsachthanhtoan.php">Chính sách thanh toán</a></li>
+            <li><a href="../frontend/chinhsachdoitra.php">Chính sách đổi trả</a></li>
+            <li><a href="../frontend/chinhsachbaohanh.php">Chính sách bảo hành</a></li>
+            <li><a href="../frontend/chinhsachgiaohang.php">Chính sách giao nhận vận chuyển</a></li>
+            <li><a href="../frontend/chinhsachnhanvien.php">Chính sách trẻ thành viên</a></li>
+            <li><a href="../frontend/hethongcuahang.php">Hệ thống cửa hàng</a></li>
+            <li><a href="../frontend/QnA.php">Q&A</a></li>             
         </div>
         <div class="footer_content">
              
@@ -59,7 +59,7 @@
             <li><a href="">Email:vhtdt12@gmail.com</a></li>
             <li><a href="">Live chat</a></li>
             <li><a href="">Messenger</a></li>
-            <li><a href="lienhe.html">Liên Hệ</a></li>
+            <li><a href="../frontend/lienhe.php">Liên Hệ</a></li>
             </ul>
         </div>
 

@@ -1,7 +1,118 @@
 <?php
 session_start();
-?>
+require_once 'ketnoi.php';
 
+// Hàm lấy giỏ hàng từ database
+function loadCartItemsFromDatabase($user_id) {
+    $conn = mysqli_connect("localhost", "root", "", "shopthoitrang");
+    $cart_items = array();
+
+    $sql = "SELECT ci.*, p.tensp, p.gia, p.anh 
+            FROM CartItems ci
+            JOIN product p ON ci.product_id = p.masp
+            WHERE ci.user_id = '$user_id'";
+    $result = mysqli_query($conn, $sql);
+
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $cart_items[] = array(
+                'product_id' => $row['product_id'], 
+                'tensp' => $row['tensp'],
+                'gia' => $row['gia'],
+                'soluong' => $row['quantity'],
+                'anh' => $row['anh'],
+                'size' => $row['size']
+            );
+        }
+    } else {
+        echo "Lỗi: " . mysqli_error($conn);
+    }
+
+    mysqli_close($conn);
+    return $cart_items;
+}
+
+// Xử lý xóa mục giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'delete') {
+    $product_id = $_POST['product_id'];
+    $size = $_POST['size'];
+
+    // Xóa mục khỏi session giỏ hàng
+    if (!empty($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $key => $item) {
+            if ($item['product_id'] == $product_id && $item['size'] == $size) {
+                unset($_SESSION['cart'][$key]);
+                break;
+            }
+        }
+        // Đặt lại các chỉ số của mảng giỏ hàng
+        $_SESSION['cart'] = array_values($_SESSION['cart']);
+    }
+
+    // Nếu người dùng đã đăng nhập, xóa mục khỏi database
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+        $user_id = $_SESSION['matk'];
+        $conn = mysqli_connect("localhost", "root", "", "shopthoitrang");
+        $sql = "DELETE FROM CartItems WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size'";
+        if (!mysqli_query($conn, $sql)) {
+            echo "Lỗi: " . mysqli_error($conn);
+        }
+
+        mysqli_close($conn);
+    }
+    header("Location: /THOITRANG_VHTDT/backend/cart.php");
+}
+
+// Xử lý tăng/giảm số lượng sản phẩm
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'update') {
+    $product_id = $_POST['product_id'];
+    $size = $_POST['size'];
+
+    if (isset($_POST['increase'])) {
+        foreach ($_SESSION['cart'] as $key => $item) {
+            if ($item['product_id'] == $product_id && $item['size'] == $size) {
+                $_SESSION['cart'][$key]['soluong'] += 1;
+                break;
+            }
+        }
+
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+            $user_id = $_SESSION['matk'];
+            $conn = mysqli_connect("localhost", "root", "", "shopthoitrang");
+            $sql = "UPDATE CartItems SET quantity = quantity + 1 WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size'";
+            mysqli_query($conn, $sql);
+            mysqli_close($conn);
+        }
+    }
+
+    if (isset($_POST['decrease'])) {
+        foreach ($_SESSION['cart'] as $key => $item) {
+            if ($item['product_id'] == $product_id && $item['size'] == $size) {
+                if ($_SESSION['cart'][$key]['soluong'] > 1) {
+                    $_SESSION['cart'][$key]['soluong'] -= 1;
+                }
+                break;
+            }
+        }
+
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+            $user_id = $_SESSION['matk'];
+            $conn = mysqli_connect("localhost", "root", "", "shopthoitrang");
+            $sql = "UPDATE CartItems SET quantity = quantity - 1 WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size' AND quantity > 1";
+            mysqli_query($conn, $sql);
+            mysqli_close($conn);
+        }
+    }
+    header("Location: /THOITRANG_VHTDT/backend/cart.php");
+}
+
+// Lấy giỏ hàng từ database nếu người dùng đã đăng nhập
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+    $user_id = $_SESSION['matk'];
+    $_SESSION['cart'] = loadCartItemsFromDatabase($user_id);
+}
+
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -12,6 +123,14 @@ session_start();
     <link rel="stylesheet" href="style.css"> <!-- Your custom CSS file -->
     <style>
         /* Custom CSS for cart page */
+        .cart-content form button {
+            background-color: #f5f5f5;
+            border: none;
+            cursor: pointer;
+        }
+        .cart-content form button:hover {
+            background-color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -36,14 +155,16 @@ session_start();
                         </thead>
                         <tbody>
                             <?php
+                            $totalAmount = 0;
+                            $totalItems = 0;
                             if (!empty($_SESSION['cart'])) {
-                                $totalAmount = 0;
-                                $totalItems = 0;
                                 foreach ($_SESSION['cart'] as $key => $product) {
-                                    // Calculate subtotal for each product
-                                    $subtotal = floatval($product['gia']) * intval($product['soluong']);
+                                    $gia_san_pham = isset($product['gia']) ? $product['gia'] : 0;
+                                    $so_luong = isset($product['soluong']) ? $product['soluong'] : 0;
+
+                                    $subtotal = floatval($gia_san_pham) * intval($so_luong);
                                     $totalAmount += $subtotal;
-                                    $totalItems += intval($product['soluong']);
+                                    $totalItems += intval($so_luong);
                             ?>
                                 <tr>
                                     <td>
@@ -51,16 +172,26 @@ session_start();
                                     </td>
                                     <td><?php echo $product['tensp']; ?></td>
                                     <td><?php echo $product['size']; ?></td>
-                                    <td><?php echo number_format(floatval($product['gia'])) . 'đ'; ?></td>
+                                    <td><?php echo number_format(floatval($gia_san_pham)) . 'đ'; ?></td>
                                     <td>
-                                        <form action="capnhatgiohang.php" method="post">
-                                            <input type="hidden" name="key" value="<?php echo $key; ?>">
-                                            <input type="number" name="soluong" value="<?php echo intval($product['soluong']); ?>" min="1">
-                                            <button type="submit">Cập nhật</button>
+                                        <form method="post" action="cart.php" style="display: flex; align-items: center;">
+                                            <input type="hidden" name="action" value="update">
+                                            <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
+                                            <input type="hidden" name="size" value="<?php echo $product['size']; ?>">
+                                            <button type="submit" name="decrease" style="margin-right: 5px;">-</button>
+                                            <input type="number" name="soluong" value="<?php echo $product['soluong']; ?>" min="1" readonly style="width: 50px; text-align: center;">
+                                            <button type="submit" name="increase" style="margin-left: 5px;">+</button>
                                         </form>
                                     </td>
                                     <td><?php echo number_format($subtotal) . 'đ'; ?></td>
-                                    <td><a href="xoacard.php?key=<?php echo $key; ?>"><i class="fas fa-trash-alt"></i></a></td>
+                                    <td>
+                                        <form method="post" action="cart.php">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
+                                            <input type="hidden" name="size" value="<?php echo $product['size']; ?>">
+                                            <button type="submit"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </td>
                                 </tr>
                             <?php
                                 }
@@ -90,12 +221,8 @@ session_start();
                         </tr>
                     </table>
                     <div class="cart-content-right-button">
-                        <button><a href="category.html">TIẾP TỤC MUA SẮM</a></button>
-                        <button><a href="checkout.php">THANH TOÁN</a></button>
-                    </div>
-                    <div class="cart-content-right-dangnhap">
-                        <p>Tài khoản IVY</p>
-                        <p>Hãy <a href="">Đăng nhập</a> tài khoản của bạn để tích điểm thành viên</p>
+                        <button><a href="cartegory.php">TIẾP TỤC MUA SẮM</a></button>
+                        <button><a href="thanhtoan.php">THANH TOÁN</a></button>
                     </div>
                 </div>
             </div>

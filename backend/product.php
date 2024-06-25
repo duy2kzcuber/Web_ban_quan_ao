@@ -1,44 +1,71 @@
 <?php
 session_start();
 
-// Function to add a product to the session cart
+// Hàm thêm sản phẩm vào giỏ hàng
 function addToCart($product) {
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = array();
-    }
-    
-    // Check if product already exists in cart, update quantity if so
-    foreach ($_SESSION['cart'] as $key => $item )  {
-        if ($item['masp'] === $product['masp'] && $item['size'] === $product['size']) {
-            $_SESSION['cart'][$key]['soluong'] += $product['soluong'];
-            return;
+    if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+        // Người dùng đã đăng nhập, lưu vào database
+        $user_id = $_SESSION['matk'];
+        saveCartItemToDatabase($user_id, $product);
+    } else {
+        // Người dùng chưa đăng nhập, lưu vào session
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = array();
         }
+
+        foreach ($_SESSION['cart'] as $key => $item) {
+            if ($item['product_id'] === $product['product_id'] && $item['size'] === $product['size']) {
+                $_SESSION['cart'][$key]['soluong'] += $product['soluong'];
+                return;
+            }
+        }
+
+        $_SESSION['cart'][] = $product;
+        setcookie(session_name(), session_id(), time() + (30 * 24 * 60 * 60), "/");
     }
-    
-    // Add new product to cart
-    $_SESSION['cart'][] = $product;
 }
 
-// Lấy mã sản phẩm từ URL
+// Hàm lưu item vào database
+function saveCartItemToDatabase($user_id, $product) {
+    $conn=mysqli_connect("localhost","root","");
+ mysqli_select_db($conn,"shopthoitrang");
+
+    $product_id = $product['product_id'];
+    $quantity = $product['soluong'];
+    $size = $product['size'];
+
+    // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
+    $check_sql = "SELECT * FROM CartItems WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size'";
+    $result_check = mysqli_query($conn, $check_sql);
+
+    if (mysqli_num_rows($result_check) > 0) {
+        // Cập nhật số lượng nếu sản phẩm đã tồn tại
+        $update_sql = "UPDATE CartItems SET quantity = quantity + '$quantity' WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size'";
+        mysqli_query($conn, $update_sql);
+    } else {
+        // Thêm sản phẩm mới vào giỏ hàng
+        $insert_sql = "INSERT INTO CartItems (user_id, product_id, quantity, size) VALUES ('$user_id', '$product_id', '$quantity', '$size')";
+        mysqli_query($conn, $insert_sql);
+    }
+
+    mysqli_close($conn);
+}
+
+// Mã xử lý khi người dùng thêm sản phẩm vào giỏ hàng
 if (isset($_GET['masp'])) {
     $masp = $_GET['masp'];
 
-    // Kết nối CSDL
     require_once 'ketnoi.php';
-
-    // Lấy thông tin sản phẩm
     $lietke_sql = "SELECT * FROM product WHERE masp='$masp'";
     $result = mysqli_query($conn, $lietke_sql);
 
     if ($r = mysqli_fetch_assoc($result)) {
-        // Xử lý thêm sản phẩm vào giỏ hàng
         if (isset($_POST['soluong'])) {
             $soluong = $_POST['soluong'];
             $size = $_POST['size'];
-            
-            // Chuẩn bị thông tin sản phẩm để thêm vào giỏ hàng
+
             $productToAdd = array(
-                'masp' => $r['masp'],
+                'product_id' => $r['masp'],
                 'tensp' => $r['tensp'],
                 'gia' => $r['gia'],
                 'soluong' => $soluong,
@@ -46,10 +73,12 @@ if (isset($_GET['masp'])) {
                 'anh' => $r['anh']
             );
 
-            // Thêm vào giỏ hàng
             addToCart($productToAdd);
+            if (isset($_POST['mua_hang'])) {
+                header("Location: cart.php");
+                exit;
+            }
 
-            // Hiển thị thông báo thành công sử dụng SweetAlert2
             echo '<script>
                     Swal.fire({
                         icon: "success",
@@ -64,6 +93,7 @@ if (isset($_GET['masp'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -83,7 +113,7 @@ if (isset($_GET['masp'])) {
         <div class="container-product">
             <?php if ($r) { ?>
                 <div class="product-top row">
-                    <p>Trang chủ</p> <span>&#10230;</span> <p>Nam</p> <span>&#10230;</span> <p>Hàng nam mới về</p> <span>&#10230;</span> <p><?php echo $r['tensp']; ?></p>
+                <p><a href="cartegory.php">Quay lại trang sản phẩm</a></p><span>&#10230;</span><?php echo $r['tensp']; ?></p>
                 </div>
                 <div class="product-content">
                     <div class="product-content-left row">
@@ -143,8 +173,8 @@ if (isset($_GET['masp'])) {
                         <p style="color: red;">Vui lòng chọn size*</p>
                         <br><br>
                         <div class="product-content-right-product-button">
-                            <button type="button"><i class="fas fa-shopping-cart"></i> <p>MUA HÀNG</p></button>
-                            <button type="submit" name="add_to_cart"><i class="fa-solid fa-cart-plus" ></i><p>THÊM VÀO GIỎ HÀNG</p></button></a>
+                            <button type="submit" name="mua_hang"><i class="fas fa-shopping-cart"></i> <p>MUA HÀNG</p></button>
+                            <button type="submit" name="add_to_cart"><i class="fa-solid fa-cart-plus" ></i><p>THÊM VÀO GIỎ HÀNG</p></button>
                         </div>
                         </form>
                         <br>
@@ -215,7 +245,7 @@ if (isset($_GET['masp'])) {
 
         if ($similarProductsResult && mysqli_num_rows($similarProductsResult) > 0) {
 ?>
-            <section class="product" >
+            <section class="product">
                 <div class="container-product">
                     <p class="sizegiuaindam">SẢN PHẨM TƯƠNG TỰ</p>
                     <br><br><br>
