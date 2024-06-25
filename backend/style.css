@@ -589,17 +589,7 @@ body{
     overflow-x: hidden;
 }
 /* Định dạng chỉ màu, làm cho chúng tròn và căn giữa với overflow ẩn */
-.mau {
-    margin-top: 10px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    overflow: hidden;
-}
+
 
 /* Định dạng mô tả sản phẩm, sắp xếp chúng thành một hàng với khoảng cách giữa và icon giỏ hàng */
 .description {
