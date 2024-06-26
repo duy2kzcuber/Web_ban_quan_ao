@@ -13,7 +13,8 @@ $ghichu=$_POST['ghichu'];
 
 
  require_once '../ketnoi.php';
-$themsql = "INSERT INTO `nhanvien` (`manv`, `tennv`,`ngaysinh`,`gioitinh`,`diachi`,`sdt`,`email`,`ngayvaolam`,`luong`,`ghichu`) VALUES ('$manv', '$tennv','$ngaysinh','$gioitinh','$diachi','$sdt','$email','$ngayvaolam','$luong','$ghichu')";
+$themsql = "INSERT INTO `nhanvien` (`manv`, `tennv`,`ngaysinh`,`gioitinh`,`diachi`,`sdt`,`email`,`ngayvaolam`,`luong`,`ghichu`) 
+    VALUES ('$manv', '$tennv','$ngaysinh','$gioitinh','$diachi','$sdt','$email','$ngayvaolam','$luong','$ghichu')";
 
             if (mysqli_query($conn, $themsql)) {
                 header("Location:lietkenhanvien.php");

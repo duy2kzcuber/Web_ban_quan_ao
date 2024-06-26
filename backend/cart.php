@@ -124,7 +124,7 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     <style>
         /* Custom CSS for cart page */
         .cart-content form button {
-            background-color: #f5f5f5;
+            background-color: #f5ff55;
             border: none;
             cursor: pointer;
         }
