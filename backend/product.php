@@ -25,31 +25,55 @@ function addToCart($product) {
     }
 }
 
+// Hàm kiểm tra số lượng tồn kho
+function checkStock($product_id, $size, $quantity) {
+    $conn = mysqli_connect("localhost", "root", "", "shopthoitrang");
+
+    $sql = "SELECT soluongsize FROM productsize WHERE masp = '$product_id' AND id = '$size'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    mysqli_close($conn);
+
+    if ($row && $row['soluongsize'] >= $quantity) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 // Hàm lưu item vào database
 function saveCartItemToDatabase($user_id, $product) {
-    $conn=mysqli_connect("localhost","root","");
- mysqli_select_db($conn,"shopthoitrang");
+    $conn = mysqli_connect("localhost", "root", "", "shopthoitrang");
 
     $product_id = $product['product_id'];
     $quantity = $product['soluong'];
-    $size = $product['size'];
+    $size_id = $product['size'];
+
+    // Lấy tensize từ bảng tensize
+    $size_sql = "SELECT tensize FROM tensize WHERE id = '$size_id'";
+    $size_result = mysqli_query($conn, $size_sql);
+    $size_row = mysqli_fetch_assoc($size_result);
+    $tensize = $size_row['tensize'];
 
     // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
-    $check_sql = "SELECT * FROM CartItems WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size'";
+    $check_sql = "SELECT * FROM CartItems WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$tensize'";
     $result_check = mysqli_query($conn, $check_sql);
 
     if (mysqli_num_rows($result_check) > 0) {
         // Cập nhật số lượng nếu sản phẩm đã tồn tại
-        $update_sql = "UPDATE CartItems SET quantity = quantity + '$quantity' WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$size'";
+        $update_sql = "UPDATE CartItems SET quantity = quantity + '$quantity' WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$tensize'";
         mysqli_query($conn, $update_sql);
     } else {
         // Thêm sản phẩm mới vào giỏ hàng
-        $insert_sql = "INSERT INTO CartItems (user_id, product_id, quantity, size) VALUES ('$user_id', '$product_id', '$quantity', '$size')";
+        $insert_sql = "INSERT INTO CartItems (user_id, product_id, quantity, size) VALUES ('$user_id', '$product_id', '$quantity', '$tensize')";
         mysqli_query($conn, $insert_sql);
     }
 
     mysqli_close($conn);
 }
+
 
 // Mã xử lý khi người dùng thêm sản phẩm vào giỏ hàng
 if (isset($_GET['masp'])) {
@@ -64,29 +88,25 @@ if (isset($_GET['masp'])) {
             $soluong = $_POST['soluong'];
             $size = $_POST['size'];
 
-            $productToAdd = array(
-                'product_id' => $r['masp'],
-                'tensp' => $r['tensp'],
-                'gia' => $r['gia'],
-                'soluong' => $soluong,
-                'size' => $size,
-                'anh' => $r['anh']
-            );
+            // Kiểm tra tồn kho trước khi thêm vào giỏ hàng
+            if (checkStock($masp, $size, $soluong)) {
+                $productToAdd = array(
+                    'product_id' => $r['masp'],
+                    'tensp' => $r['tensp'],
+                    'gia' => $r['gia'],
+                    'soluong' => $soluong,
+                    'size' => $size,
+                    'anh' => $r['anh']
+                );
 
-            addToCart($productToAdd);
-            if (isset($_POST['mua_hang'])) {
-                header("Location: cart.php");
-                exit;
+                addToCart($productToAdd);
+                if (isset($_POST['mua_hang'])) {
+                    header("Location: cart.php");
+                    exit;
+                }
+            } else {
+                echo "Không đủ số lượng sản phẩm với size đã chọn.";
             }
-
-            echo '<script>
-                    Swal.fire({
-                        icon: "success",
-                        title: "Đã thêm vào giỏ hàng!",
-                        text: "' . $r['tensp'] . ' đã được thêm vào giỏ hàng của bạn.",
-                        confirmButtonText: "OK"
-                    });
-                  </script>';
         }
     } else {
         echo "Không tìm thấy sản phẩm với mã sản phẩm '$masp'.";
@@ -147,11 +167,10 @@ if (isset($_GET['masp'])) {
                                     $lietke_size_sql = "SELECT * FROM tensize";
                                     $result_size = mysqli_query($conn, $lietke_size_sql); 
 
-                                    // Display sizes if available
                                     if ($result_size && mysqli_num_rows($result_size) > 0) {
                                         echo '<select name="size">';
                                         while ($row_size = mysqli_fetch_assoc($result_size)) {
-                                            echo '<option value="' . htmlspecialchars($row_size['tensize']) . '">' . htmlspecialchars($row_size['tensize']) . '</option>';
+                                            echo '<option value="' . htmlspecialchars($row_size['id']) . '">' . htmlspecialchars($row_size['tensize']) . '</option>';
                                         }
                                         echo '</select>';
                                     } else {
@@ -161,7 +180,7 @@ if (isset($_GET['masp'])) {
                                 </div>
                                 <div>
                                     <i class="fa-solid fa-ruler"></i>
-                                    <a href="https://ivymoda.com/about/tu-van-size" id="size-chart-link"><u>Bảng Size</u></a>
+                                    <a href="../frontend/tuvansize.php" id="size-chart-link"><u>Bảng Size</u></a>
                                 </div>
                         </div>
                         
@@ -174,7 +193,7 @@ if (isset($_GET['masp'])) {
                         <br><br>
                         <div class="product-content-right-product-button">
                             <button type="submit" name="mua_hang"><i class="fas fa-shopping-cart"></i> <p>MUA HÀNG</p></button>
-                            <button type="submit" name="add_to_cart"><i class="fa-solid fa-cart-plus" ></i><p>THÊM VÀO GIỎ HÀNG</p></button>
+                            <button type="submit" name="add_to_cart"><i class="fas fa-shopping-cart"></i> <p>THÊM VÀO GIỎ HÀNG</p></button>
                         </div>
                         </form>
                         <br>
@@ -288,18 +307,7 @@ if (isset($_GET['masp'])) {
         
     </section>
 
-    <!-- Thông báo thêm vào giỏ hàng thành công -->
-    <script>
-        function addToCart(productName) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Đã thêm vào giỏ hàng!',
-                text: `${productName} đã được thêm vào giỏ hàng của bạn.`,
-                confirmButtonText: 'OK'
-           
-            });
-        }
-    </script>
+   
 <br><br><br>
     <!-- Footer -->
     <?php include '../footertrangchu.php'; ?>

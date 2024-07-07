@@ -167,7 +167,7 @@
 <div class="form-container " >
             <h2>Khách hàng mới của VHTDT</h2>
             
-            <button><a style="color:rgb(245, 247, 247);" href="../DangKy/DangKy.php">Đăng Ký</a></button>
+            <button><a style="color:rgb(245, 247, 247);" href="DangKy.php">Đăng Ký</a></button>
         </div>
 </body>
 </html>

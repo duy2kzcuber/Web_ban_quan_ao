@@ -2,8 +2,9 @@
 $masp = $_POST['masp'];
 $tensp = $_POST['tensp'];
 $gia = $_POST['gia'];
+$gianhap = $_POST['gianhap'];
 $mausac = $_POST['mausac'];
-$soluong = $_POST['soluong'];
+
 $ngaytao = $_POST['ngaytao'];
 $madm = $_POST['madm'];
 $gioithieu = $_POST['gioithieu'];
@@ -98,8 +99,8 @@ if (!empty($masp) && !empty($tensp) && !empty($gia)) {
     }
 
     // Tạo câu lệnh SQL để thêm sản phẩm vào cơ sở dữ liệu
-    $themsql = "INSERT INTO `product` (`masp`, `tensp`, `gia`, `mausac`, `soluong`, `ngaytao`, `madm`, `gioithieu`, `ctsp`, `baoquan`, `anh`, `anhmt1`, `anhmt2`, `anhmt3`) 
-                VALUES ('$masp', '$tensp', '$gia', '$mausac', '$soluong', '$ngaytao', '$madm', '$gioithieu', '$ctsp', '$baoquan', '$fileNameMain', '$fileNameDesc1', '$fileNameDesc2', '$fileNameDesc3')";
+    $themsql = "INSERT INTO `product` (`masp`, `tensp`, `gia`,`gianhap`, `mausac`, `ngaytao`, `madm`, `gioithieu`, `ctsp`, `baoquan`, `anh`, `anhmt1`, `anhmt2`, `anhmt3`) 
+                VALUES ('$masp', '$tensp', '$gia','$gianhap', '$mausac', '$ngaytao', '$madm', '$gioithieu', '$ctsp', '$baoquan', '$fileNameMain', '$fileNameDesc1', '$fileNameDesc2', '$fileNameDesc3')";
 
     // Thực thi câu lệnh SQL
     if (mysqli_query($conn, $themsql)) {

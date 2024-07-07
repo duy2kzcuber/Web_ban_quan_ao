@@ -5,8 +5,9 @@ $masp = $_POST['sid'];
 // Lấy dữ liệu từ form
 $tensp = $_POST['tensp'];
 $gia = $_POST['gia'];
+$gianhap = $_POST['gianhap'];
 $mausac = $_POST['mausac'];
-$soluong = $_POST['soluong'];
+
 $ngaytao = $_POST['ngaytao'];
 $gioithieu = $_POST['gioithieu'];
 $ctsp = $_POST['ctsp'];
@@ -141,7 +142,7 @@ if (!empty($newUpload3)) {
 
 
 // Cập nhật thông tin sản phẩm vào cơ sở dữ liệu
-$updateSql = "UPDATE product SET tensp='$tensp', gia='$gia', mausac='$mausac', soluong='$soluong', ngaytao='$ngaytao', gioithieu='$gioithieu', ctsp='$ctsp', baoquan='$baoquan' WHERE masp='$masp'";
+$updateSql = "UPDATE product SET tensp='$tensp', gia='$gia',gianhap='$gianhap', mausac='$mausac', ngaytao='$ngaytao', gioithieu='$gioithieu', ctsp='$ctsp', baoquan='$baoquan' WHERE masp='$masp'";
 
 if (mysqli_query($conn, $updateSql)) {
     // Nếu cập nhật thành công, chuyển hướng về trang liệt kê sản phẩm

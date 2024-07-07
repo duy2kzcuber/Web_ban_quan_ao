@@ -8,6 +8,11 @@
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#myModal">
             Thêm sản phẩm mới
         </button>
+        <a href="productsize/lietkesoluong.php">
+        <button type="button" class="btn btn-success mb-3">
+            Thêm số lượng hàng 
+        </button> </a>
+
 
         <table class="table table-dark">
             <thead>
@@ -16,9 +21,9 @@
                     <th>Tên danh mục cha </th>
                     <th>Tên danh mục con</th>
                     <th>Tên sản phẩm</th>
-                    <th>Giá</th>
+                    <th>Giá bán</th>
+                    <th>Giá nhập</th>
                     <th>Màu sắc</th>
-                    <th>Số lượng kho</th>
                     <th>Ngày tạo</th>
                     <th>Giới thiệu</th>
                     <th>Chi tiết sản phẩm</th>
@@ -53,8 +58,9 @@ while ($r = mysqli_fetch_assoc($result)) {
                     <td><?php echo $r['tendm']; ?></td>
                     <td><?php echo $r['tensp']; ?></td>
                     <td><?php echo $r['gia']; ?></td>
+                    <td><?php echo $r['gianhap']; ?></td>
                     <td><?php echo $r['mausac']; ?></td>
-                    <td><?php echo $r['soluong']; ?></td>
+                    
                     <td><?php echo $r['ngaytao']; ?></td>
                     <td><?php echo $r['gioithieu']; ?></td>
                     <td><?php echo $r['ctsp']; ?></td>
@@ -153,17 +159,18 @@ while ($r = mysqli_fetch_assoc($result)) {
                                 <input type="text" id="tensp" class="form-control" name="tensp">
                             </div>
                             <div class="form-group">
-                                <label for="gia">Giá</label>
+                                <label for="gia">Giá bán </label>
                                 <input type="text" id="gia" name="gia" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="gianhap">Giá nhập </label>
+                                <input type="text" id="gianhap" name="gianhap" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label for="mausac">Màu sắc</label>
                                 <input type="text" id="mausac" name="mausac" class="form-control">
                             </div>
-                            <div class="form-group">
-                                <label for="soluong">Số lượng kho</label>
-                                <input type="text" id="soluong" name="soluong" class="form-control">
-                            </div>
+                            
                             <div class="form-group">
                                 <label for="ngaytao">Ngày tạo</label>
                                 <input type="date" id="ngaytao" name="ngaytao" class="form-control">

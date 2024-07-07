@@ -28,17 +28,18 @@ include "../slider.php";
                 <input type="text" id="tensp" class="form-control" name="tensp" value="<?php echo $row['tensp']; ?>">
             </div>
             <div class="form-group">
-                <label for="gia">Giá</label>
+                <label for="gia">Giá bán</label>
                 <input type="text" id="gia" name="gia" class="form-control" value="<?php echo $row['gia']; ?>">
+            </div>
+            <div class="form-group">
+                <label for="gianhap">Giá nhập </label>
+                <input type="text" id="gianhap" name="gianhap" class="form-control" value="<?php echo $row['gianhap']; ?>">
             </div>
             <div class="form-group">
                 <label for="mausac">Màu sắc</label>
                 <input type="text" id="mausac" name="mausac" class="form-control" value="<?php echo $row['mausac']; ?>">
             </div>
-            <div class="form-group">
-                <label for="soluong">Số lượng kho</label>
-                <input type="text" id="soluong" name="soluong" class="form-control" value="<?php echo $row['soluong']; ?>">
-            </div>
+           
             <div class="form-group">
                 <label for="ngaytao">Ngày tạo</label>
                 <input type="date" id="ngaytao" name="ngaytao" class="form-control" value="<?php echo $row['ngaytao']; ?>">
