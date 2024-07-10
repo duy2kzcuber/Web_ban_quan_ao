@@ -243,11 +243,10 @@ body {
     </div>
     <?php endforeach; ?>
   </div>
-
   <!-- Tổng cộng và nút tiếp tục mua sắm -->
   <div>
     <h3>Tổng cộng: <?php echo number_format($order['tongtien']); ?>đ</h3>
-    <button class="continue-shopping-btn" onclick="location.href='index.php'">Tiếp tục mua sắm</button>
+    <button class="continue-shopping-btn" onclick="location.href='/Thoitrang_VHTDT/backend/cartegory.php'">Tiếp tục mua sắm</button>
   </div>
 </div>
 

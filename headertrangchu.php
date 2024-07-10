@@ -25,6 +25,7 @@ function fetchCategories($conn) {
             <img src="img/logo.png" alt="HVTD Logo">
         </a>
     </div>
+    <a href=""></a>
     <div class="menu">
         <ul>
             <?php
@@ -36,7 +37,7 @@ function fetchCategories($conn) {
                 if (!empty($subcategories)) {
                     echo '<ul class="sub-menu">';
                     foreach ($subcategories as $subcategory) {
-                        echo '<li><a href="cartegory.php?tendm=' . urlencode($subcategory['tendm']) . '">' . $subcategory['tendm'] . '</a></li>';
+                        echo '<li><a href="/Thoitrang_VHTDT/backend/cartegory.php?tendm=' . urlencode($subcategory['tendm']) . '">' . $subcategory['tendm'] . '</a></li>';
                     }
                     echo '</ul>';
                 }
@@ -66,7 +67,7 @@ function fetchCategories($conn) {
             
         </ul>
     </div>
-    <div class="others">
+    <div style="margin-right:70px" class="others">
         <ul>
             <li class="example">
                 <input type="text" placeholder="Tìm kiếm.." name="search">
