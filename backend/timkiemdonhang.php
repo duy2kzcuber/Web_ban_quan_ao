@@ -53,7 +53,10 @@
 </style>
 </head>
 <body>
-<?php include '../headertrangchu.php'; ?>
+<?php include '../headertrangchu.php'; 
+require_once 'ketnoi.php';
+
+?>
 <br><br><br>
 <div class="search-container">
     <h2>Tìm kiếm đơn hàng theo số điện thoại</h2>

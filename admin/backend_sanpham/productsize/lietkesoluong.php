@@ -3,6 +3,8 @@
 ?>
 <div class="container">
     <h1>DANH SÁCH SỐ LƯỢNG SIZE</h1>
+    <!-- Button to update inventory -->
+    <button type="button" class="btn btn-primary" onclick="window.location.href='capnhatsoluong.php'">Cập nhật số lượng sản phẩm</button>
     <table class="table table-dark">
         <!-- Button to Open the Modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
@@ -108,3 +110,4 @@
   </div>
 </div>
 </body>
+</html>

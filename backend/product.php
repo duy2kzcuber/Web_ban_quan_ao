@@ -49,13 +49,9 @@ function saveCartItemToDatabase($user_id, $product) {
 
     $product_id = $product['product_id'];
     $quantity = $product['soluong'];
-    $size_id = $product['size'];
+    $tensize = $product['size'];
 
-    // Lấy tensize từ bảng tensize
-    $size_sql = "SELECT tensize FROM tensize WHERE id = '$size_id'";
-    $size_result = mysqli_query($conn, $size_sql);
-    $size_row = mysqli_fetch_assoc($size_result);
-    $tensize = $size_row['tensize'];
+    
 
     // Kiểm tra nếu sản phẩm đã tồn tại trong giỏ hàng
     $check_sql = "SELECT * FROM CartItems WHERE user_id = '$user_id' AND product_id = '$product_id' AND size = '$tensize'";
@@ -83,27 +79,34 @@ if (isset($_GET['masp'])) {
     $lietke_sql = "SELECT * FROM product WHERE masp='$masp'";
     $result = mysqli_query($conn, $lietke_sql);
 
-    if ($r = mysqli_fetch_assoc($result)) {
-        if (isset($_POST['soluong'])) {
-            $soluong = $_POST['soluong'];
-            $size = $_POST['size'];
+   if ($r = mysqli_fetch_assoc($result)) {
+       if (isset($_POST['soluong']) && isset($_POST['size'])) {
+        $soluong = $_POST['soluong'];
+        $size_id = $_POST['size'];
 
-            // Kiểm tra tồn kho trước khi thêm vào giỏ hàng
-            if (checkStock($masp, $size, $soluong)) {
-                $productToAdd = array(
-                    'product_id' => $r['masp'],
-                    'tensp' => $r['tensp'],
-                    'gia' => $r['gia'],
-                    'soluong' => $soluong,
-                    'size' => $size,
-                    'anh' => $r['anh']
-                );
+        // Lấy tên size từ bảng tensize
+        $size_sql = "SELECT tensize FROM tensize WHERE id = '$size_id'";
+        $size_result = mysqli_query($conn, $size_sql);
+        $size_row = mysqli_fetch_assoc($size_result);
+        $tensize = $size_row['tensize'];
 
-                addToCart($productToAdd);
-                if (isset($_POST['mua_hang'])) {
-                    header("Location: cart.php");
-                    exit;
-                }
+        // Kiểm tra tồn kho trước khi thêm vào giỏ hàng
+        if (checkStock($masp, $size_id, $soluong)) {
+            $productToAdd = array(
+                'product_id' => $r['masp'],
+                'tensp' => $r['tensp'],
+                'gia' => $r['gia'],
+                'soluong' => $soluong,
+                'size' => $tensize, 
+                'anh' => $r['anh']
+            );
+
+            addToCart($productToAdd);
+            if (isset($_POST['mua_hang'])) {
+                header("Location: cart.php");
+                exit;
+            }
+
             } else {
                 echo "Không đủ số lượng sản phẩm với size đã chọn.";
             }
@@ -162,22 +165,31 @@ if (isset($_GET['masp'])) {
                         </div>
                         <div class="product-content-right-product-size">
                             <form action="" method="post">
-                                <div class="size">
-                                    <?php
-                                    $lietke_size_sql = "SELECT * FROM tensize";
-                                    $result_size = mysqli_query($conn, $lietke_size_sql); 
+                            <div style="width: 100px" class="size">
+            <?php
+            // Truy vấn SQL để lấy danh sách size và số lượng tồn kho từ bảng productsize
+            $lietke_size_sql = "SELECT ts.id, ts.tensize, ps.soluongsize 
+                                FROM tensize ts
+                                LEFT JOIN productsize ps ON ts.id = ps.id 
+                                WHERE ps.masp = '$masp'";
+            $result_size = mysqli_query($conn, $lietke_size_sql);
 
-                                    if ($result_size && mysqli_num_rows($result_size) > 0) {
-                                        echo '<select name="size">';
-                                        while ($row_size = mysqli_fetch_assoc($result_size)) {
-                                            echo '<option value="' . htmlspecialchars($row_size['id']) . '">' . htmlspecialchars($row_size['tensize']) . '</option>';
-                                        }
-                                        echo '</select>';
-                                    } else {
-                                        echo '<p>Không có size nào được tìm thấy.</p>';
-                                    }
-                                    ?>
-                                </div>
+            if ($result_size && mysqli_num_rows($result_size) > 0) {
+                echo '<select name="size">';
+                while ($row_size = mysqli_fetch_assoc($result_size)) {
+                    $soluongsize = $row_size['soluongsize'];
+                    $tensize = htmlspecialchars($row_size['tensize']);
+                    $id = htmlspecialchars($row_size['id']);
+                    echo '<option value="' . $id . '">' . $tensize . ' - Số lượng kho: ' . $soluongsize . '</option>';
+                }
+                echo '</select>';
+            } else {
+                echo '<p>Sản phẩm này chúng tôi chưa mở bán vui lòng chọn mẫu khác</p>';
+            }
+            ?>
+        </div>
+                                
+                                
                                 <div>
                                     <i class="fa-solid fa-ruler"></i>
                                     <a href="../frontend/tuvansize.php" id="size-chart-link"><u>Bảng Size</u></a>
@@ -185,8 +197,8 @@ if (isset($_GET['masp'])) {
                         </div>
                         
                         <div class="quantity">
-                            <p style="font-weight: bold;">Số lượng:</p>
-                            <input type="number" min="1" name="soluong" value="1">
+                            <p style="font-weight: bold;">Số lượng mua:</p>
+                            <input style="width:70px" type="number" min="1" name="soluong" value="1">
                         </div>
                         <br>
                         <p style="color: red;">Vui lòng chọn size*</p>

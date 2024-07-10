@@ -101,6 +101,7 @@
     //        echo "\n";
             if (mysqli_num_rows($result_check) > 0) {
                 $row = mysqli_fetch_assoc($result_check);
+              //  password_verify($mk, $row[])
                 if ($mk == $row['matkhau']) {
                     // Tạo session cho người dùng
                     
@@ -112,7 +113,7 @@
                         setcookie(session_name(), session_id(), time() + (30 * 24 * 60 * 60), "/");
                     }
                     // Chuyển hướng đến trang khác sau khi đăng nhập thành công (ví dụ: trang chủ)
-                    header("Location:TrangChu.php");
+                    header("Location: slider.php");
                     exit;
                 } else {
                     $message = "Mật khẩu không đúng!";

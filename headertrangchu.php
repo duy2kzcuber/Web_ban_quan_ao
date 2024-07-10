@@ -21,7 +21,7 @@ function fetchCategories($conn) {
 
 <header style="background-color: rgb(253, 252, 252);">
     <div class="logo">
-        <a href="index.php">
+        <a href="/Thoitrang_VHTDT/backend/Trangchu.php">
             <img src="img/logo.png" alt="HVTD Logo">
         </a>
     </div>
@@ -54,14 +54,16 @@ function fetchCategories($conn) {
                     <li><a href="../frontend/chinhsachbaohanh.php">Chính sách bảo hành</a></li>
                     <li><a href="../frontend/chinhsachgiaohang.php">Chính sách giao nhận vận chuyển</a></li>
                     <li><a href="../frontend/hethongcuahang.php">Hệ thống cửa hàng </a></li>
+                    
                 </ul>
             </li>
             <li class="menu-item">
-                <a>VỀ CHÚNG TÔI</a>
+                <a href="/Thoitrang_VHTDT/backend/trangtintuc.php">TIN TỨC</a>
                 <ul class="sub-menu">
                     
                 </ul>
             </li>
+            
         </ul>
     </div>
     <div class="others">

@@ -13,7 +13,6 @@ if(isset($_GET['order_id'])) {
                     (od.thanhtien) AS thanhtien_total
             FROM OrderDetails od
             INNER JOIN Product p ON od.masp = p.masp
-           
             WHERE od.order_id = '$order_id'";
     
     $result = mysqli_query($conn, $query);
@@ -53,12 +52,11 @@ if(isset($_GET['order_id'])) {
         $total_query = "SELECT SUM(thanhtien) AS tongtien_total FROM OrderDetails WHERE order_id = '$order_id'";
         $total_result = mysqli_query($conn, $total_query);
         $total_row = mysqli_fetch_assoc($total_result);
-        $tienship=50000;
-        $total_amount = $total_row['tongtien_total']+$tienship;
-       
+        $tienship = 50000;
+        $total_amount = $total_row['tongtien_total'] + $tienship;
         
         echo "<tr>";
-        echo "<td colspan='6' class='text-right'><strong>Tổng ship:</strong></td>";
+        echo "<td colspan='6' class='text-right'><strong>Tiền ship:</strong></td>";
         echo "<td><strong>" . number_format($tienship, 0, ',', '.') . " VNĐ</strong></td>";
         echo "</tr>";
 
@@ -69,6 +67,12 @@ if(isset($_GET['order_id'])) {
         
         echo "</tbody>";
         echo "</table>";
+        
+        // Thêm nút Quay lại
+        echo "<div class='text-center mt-3'>";
+        echo "<a href='Danhsach_dh.php' class='btn btn-primary'>Quay lại</a>";
+        echo "</div>";
+        
         echo "</div>";
     } else {
         echo "Không có chi tiết đơn hàng cho mã số $order_id.";

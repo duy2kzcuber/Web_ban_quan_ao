@@ -156,30 +156,34 @@
                 Quản Trị Cửa Hàng
             </div>
             <div class="list-group list-group-flush">
-                <a href="backend_danhmuc/lietkedanhmuc.php" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_danhmuc/lietkedanhmuc.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-tachometer-alt"></i> Bảng Điều Khiển
                 </a>
-                <a href="#products-section" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_sanpham/lietke.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-box"></i> Sản Phẩm
                 </a>
-                <a href="#categories-section" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_danhmuc/lietkedanhmuc.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-tags"></i> Danh Mục Sản Phẩm
                 </a>
-                <a href="#product-types-section" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_nhanvien/lietkenhanvien.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-cubes"></i> Nhân Viên
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_donhang/Danhsach_dh.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-shopping-cart"></i> Đơn Hàng
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_quanlykhachhang/oder.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-users"></i> Khách Hàng
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
-                    <i class="fas fa-cog"></i> Cài Đặt
+                <a href="/Thoitrang_VHTDT/admin/backend_thongke/thongke.php" class="list-group-item list-group-item-action text-white">
+                    <i class="fas fa-cog"></i> Thống kê
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_tintuc/lietketintuc.php" class="list-group-item list-group-item-action text-white">
+                    <i class="fas fa"></i> Tin tức
+                </a>
+                <a href="/Thoitrang_VHTDT/DangNhapAdmin.html" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-sign-out-alt"></i> Đăng Xuất
                 </a>
+
             </div>
         </div>
         

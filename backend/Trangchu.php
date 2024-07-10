@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -19,15 +18,30 @@
 
 
     <! -- Đây là phần ảnh chạy dưới logo,other và menu -->
-    <div style="margin-top:0px ;" class="slide-show">
-        <div class="list-image">
-            <img src="img/show1.webp" alt="Image 4">
-            <img src="img/show2.webp" alt="Image 5">
-            <img src="img/6.jpg" alt="Image 6">
-            <img src="img/7.jpg" alt="Image 7">
-        </div>
+    <div style="margin-top: 0px;" class="slide-show">
+    <div class="list-image">
+        <?php
+        // Kết nối tới cơ sở dữ liệu
+        require_once 'ketnoi.php'; // Thay đổi đường dẫn tới file kết nối
+
+        // Câu lệnh truy vấn
+        $sql = "SELECT * FROM anhht WHERE mota = 'anhchay1'";
+        $result = mysqli_query($conn, $sql);
+
+        // Duyệt kết quả và hiển thị ảnh
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<img src="../admin/backend_anh/imgs/' . $row['anhhienthi'] . '" alt="Image ' . $row['idanhht'] . '">';
+        }
+
+        // Giải phóng kết quả
+        mysqli_free_result($result);
+
         
+        ?>
     </div>
+</div>
+
+</div>
     <! -- Đây là Flashsale -->
     <section style="margin-bottom: 50px;" class="home-new-prod">
 
@@ -209,14 +223,28 @@ function getProductChunk($products, $start, $length = 5) {
     <div class="gallery">
         <div class="gallery">
             <div id="gallery-header" style="font: 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', 'DejaVu Sans', Verdana, 'sans-serif'">GALLERY</div>
+            <div style="margin-top: 0px;" class="slide-show">
             <div class="gallery-body">
-                
-                <div class="gal-item"><img src="img/gal1.jpg" alt=""> </div>
-                <div class="gal-item"><img src="img/gal2.jpg" alt=""> </div>
-                <div class="gal-item"><img src="img/gal3.jpg" alt=""> </div>
-                <div class="gal-item"><img src="img/gal4.jpg" alt=""> </div>
-                <div class="gal-item"><img src="img/gal5.jpg" alt=""> </div>
-            </div>
+    <?php
+    // Kết nối tới cơ sở dữ liệu
+    require_once 'ketnoi.php'; // Thay đổi đường dẫn tới file kết nối
+
+    // Câu lệnh truy vấn
+    $sql = "SELECT * FROM anhht WHERE mota = 'anhchay2'";
+    $result = mysqli_query($conn, $sql);
+
+    // Duyệt kết quả và hiển thị ảnh
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo '<div class="gal-item"><img src="../admin/backend_anh/imgs/' . $row['anhhienthi'] . '" alt=""></div>';
+    }
+
+    // Giải phóng kết quả
+    mysqli_free_result($result);
+
+   
+    ?>
+</div>
+
         </div>
     </img>
     <br>

@@ -156,19 +156,19 @@
                 Nhân viên cửa hàng
             </div>
             <div class="list-group list-group-flush">
-                <a href="#products-section" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/nhanvien/backend_sanpham/lietke.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-box"></i> Sản Phẩm
                 </a>
-                <a href="#categories-section" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/nhanvien/backend_danhmuc/lietkedanhmuc.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-tags"></i> Danh Mục Sản Phẩm
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/nhanvien/backend_donhang/Danhsach_dh.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-shopping-cart"></i> Đơn Hàng
                 </a>
                 <a href="#" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-users"></i> Khách Hàng
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/nhanvien/dangxuat.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-sign-out-alt"></i> Đăng Xuất
                 </a>
             </div>
