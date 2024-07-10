@@ -81,6 +81,9 @@
     }
 </style>
 <body>
+<div class="cartegory-top rowe">
+            <p><a href="Trangchu.php">Trang chủ</a><span>&#10230;</span>Thông tin </p>
+        </div>
     <div class="form-container">
         <h1>ĐĂNG NHẬP</h1>
         <?php

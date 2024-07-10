@@ -56,22 +56,18 @@ function fetchCategories($conn) {
                     <li><a href="../frontend/hethongcuahang.php">Hệ thống cửa hàng </a></li>
                 </ul>
             </li>
-            <li class="menu-item">
-                <a>VỀ CHÚNG TÔI</a>
-                <ul class="sub-menu">
-                    
-                </ul>
-            </li>
         </ul>
     </div>
-    <div class="others">
+    <div style="margin-right:100px" class="others">
         <ul>
             <li class="example">
-                <input type="text" placeholder="Tìm kiếm.." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
+            <form method="GET" action="search.php">
+                    <input type="text" placeholder="Tìm kiếm.." name="tendm">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
             </li>
             <li>
-                <a href="cart.php"><i class="fas fa-shopping-cart"></i></a>
+                <a href="../backend/cart.php"><i class="fas fa-shopping-cart"></i></a>
             </li>
             <li class="menu-item" id="phone-menu">
                 <a href="contact.html" id="contact-icon">
@@ -82,11 +78,11 @@ function fetchCategories($conn) {
                     <li><a href="#"><i class="fa-brands fa-rocketchat"></i> Live Chat</a></li>
                     <li><a href="https://www.facebook.com/"><i class="fa-brands fa-signal-messenger"></i> Messenger</a></li>
                     <li><a href="https://mail.google.com/mail/u/0/#inbox"><i class="fa-solid fa-envelope"></i> Email</a></li>
-                    <li><a href="../backend/timkiemdonhang.php"><i class="fa-solid fa-right-to-bracket"></i> Tra cứu đơn hàng</a></li>
+                    <li><a href="../backend/lichsudonhang.php"><i class="fa-solid fa-right-to-bracket"></i> Tra cứu đơn hàng</a></li>
                 </ul>
             </li>
             <li>
-            <a href="../backend/ThongTin.php"><i class="fas fa-user black"></i></a>
+                <a href="../backend/ThongTin.php"><i class="fas fa-user black"></i></a>
             </li>
         </ul>
     </div>

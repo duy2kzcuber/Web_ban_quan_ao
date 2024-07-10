@@ -1,7 +1,7 @@
+
 <?php include "../slider.php"; 
 
 ?>
-    
     <div class="container">
         <h1>DANH SÁCH SẢN PHẨM</h1>
         <!-- Button to Open the Modal -->
@@ -13,7 +13,7 @@
             Thêm số lượng hàng 
         </button> </a>
 
-
+        
         <table class="table table-dark">
             <thead>
                 <tr>
@@ -60,7 +60,6 @@ while ($r = mysqli_fetch_assoc($result)) {
                     <td><?php echo $r['gia']; ?></td>
                     <td><?php echo $r['gianhap']; ?></td>
                     <td><?php echo $r['mausac']; ?></td>
-                    
                     <td><?php echo $r['ngaytao']; ?></td>
                     <td><?php echo $r['gioithieu']; ?></td>
                     <td><?php echo $r['ctsp']; ?></td>
@@ -152,7 +151,10 @@ while ($r = mysqli_fetch_assoc($result)) {
         // Đặt lại giá trị mặc định cho danh mục con khi thay đổi danh mục cha
         document.getElementById('madm').value = '';
     }
+    
 </script>
+<script src="ckeditor/ckeditor.js"></script>
+<script>CKEDITOR.replace('ckeditor');</script>
 
                             <div class="form-group">
                                 <label for="tensp">Tên sản phẩm</label>
@@ -177,15 +179,15 @@ while ($r = mysqli_fetch_assoc($result)) {
                             </div>
                             <div class="form-group">
                                 <label for="gioithieu">Giới thiệu</label>
-                                <input type="text" id="gioithieu" name="gioithieu" class="form-control">
+                                <textarea type="text" id="gioithieu" name="gioithieu" class="ckeditor"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="ctsp">Chi tiết sản phẩm</label>
-                                <input type="text" id="ctsp" name="ctsp" class="form-control">
+                                <textarea type="text" id="ctsp" name="ctsp" class="ckeditor"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="baoquan">Bảo quản</label>
-                                <input type="text" id="baoquan" name="baoquan" class="form-control">
+                                <textarea type="text" id="baoquan" name="baoquan" class="ckeditor"></textarea>
                             </div>
 
                             <div class="form-group">

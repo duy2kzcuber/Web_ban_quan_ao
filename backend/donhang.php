@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,19 +24,21 @@
   }
 
   .order-container {
-    width: 100%;
-    max-width: 800px;
-    background-color: #fff;
+    width: 80%; /* Độ rộng của phần container */
+    background-color: #f9f9f9; /* Màu nền */
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     overflow: hidden; /* Tránh nội dung rò rỉ */
     padding: 20px;
+    margin: auto; /* Để căn giữa nội dung */
+    text-align: center; /* Căn giữa nội dung trong container */
   }
 
   .order-item {
     display: flex;
     padding: 15px;
     border-bottom: 1px solid #eee;
+    align-items: center; /* Căn các phần tử trong order-item theo chiều dọc */
   }
 
   .order-item:last-child {
@@ -56,6 +59,7 @@
 
   .details {
     flex: 1; /* Phần còn lại của đơn hàng */
+    text-align: left; /* Căn trái nội dung trong details */
   }
 
   .details h3 {
@@ -72,11 +76,13 @@
   .status {
     display: flex;
     align-items: center;
+    justify-content: center; /* Căn giữa phần status */
+    flex-direction: column; /* Để các phần tử trong status sắp xếp theo chiều dọc */
   }
 
   .status-text {
     font-weight: bold;
-    margin-right: 10px;
+    margin-bottom: 10px;
     color: #333;
   }
 
@@ -93,87 +99,78 @@
   .cancel-btn:hover {
     background-color: #e04141; /* Màu khi di chuột qua */
   }
+
+  .continue-shopping-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+
+  .continue-shopping-btn:hover {
+    background-color: #0056b3; /* Màu khi di chuột qua */
+  }
+
+  /* Phần thông tin khách hàng */
+  .customer-info {
+    margin-top: 30px;
+    text-align: left;
+  }
+
+  .customer-info h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .customer-info p {
+    margin-bottom: 8px;
+    color: #666;
+  }
 </style>
 </head>
 <body>
 
-
 <div class="order-container">
-  <form id="order-form">
-    <div class="order-item">
-      <div class="image-container">
-        <img src="product1.jpg" alt="Product 1">
-      </div>
-      <div class="details">
-        <h3>Sản phẩm 1</h3>
-        <p>Kích thước: M</p>
-        <p>Giá: $50</p>
-      </div>
-      <div class="status">
-        <span class="status-text">Đang chờ xác nhận</span>
-        <button type="button" class="cancel-btn">Hủy đơn hàng</button>
-      </div>
+  <img src="../backend/img/logo.png" alt="Logo DolaStyle" style=" width: 250px; margin-bottom: 20px;">
+
+  <div>
+    <p>Cảm ơn bạn đã đặt hàng!</p>
+    <pd>Nhân viên sẽ gọi điện đến số điện thoại để xác nhận <strong>142342545</strong>. Vui lòng kiểm tra điện thoại của bạn.</p>
+  </div>
+  <div class="customer-info">
+    <h4>Thông tin mua hàng</h4>
+    <p><strong>Tên khách hàng:</strong> Phạm Tuệ</p>
+    <p><strong>Số điện thoại:</strong> +84832403597</p>
+    <p><strong>Địa chỉ</strong>abc</p>
+  </div>
+
+  <div class="customer-info">
+    <h4>Địa chỉ nhận hàng</h4>
+    <p><strong>Tên người nhận:</strong> Phạm Tuệ</p>
+    <p><strong>Số điện thoại:</strong> +84832403597</p>
+    <p><strong>Địa chỉ chi tiết:</strong> Xã Ea Tiêu, Huyện Cư Kuin, Đắk Lắk</p>
+  </div>
+
+  <div class="order-item">
+    <div class="image-container">
+      <img src="product1.jpg" alt="Product 1">
     </div>
-
-    <div class="order-item">
-      <div class="image-container">
-        <img src="product2.jpg" alt="Product 2">
-      </div>
-      <div class="details">
-        <h3>Sản phẩm 2</h3>
-        <p>Kích thước: L</p>
-        <p>Giá: $70</p>
-      </div>
-      <div class="status">
-        <span class="status-text">Đang giao</span>
-      </div>
+    <div class="details">
+      <h3>ĐẦM THUN TAY LOE CUT OUT</h3>
+      <p>Màu sắc: Xanh nhạt / Size: S</p>
+      <p>Giá sản phẩm: 299.000đ</p>
+      <p>Phí vận chuyển: 40.000đ</p>
+      <p><strong>Tổng cộng: 339.000đ</strong></p>
     </div>
-
-    <div class="order-item">
-      <div class="image-container">
-        <img src="product3.jpg" alt="Product 3">
-      </div>
-      <div class="details">
-        <h3>Sản phẩm 3</h3>
-        <p>Kích thước: S</p>
-        <p>Giá: $30</p>
-      </div>
-      <div class="status">
-        <span class="status-text">Đã giao hàng</span>
-      </div>
-    </div>
-
-    <!-- Các đơn hàng khác nếu có -->
-
-  </form>
+   
+    
+  <button type="button" class="continue-shopping-btn">Tiếp tục mua hàng</button>
 </div>
-
-<script>
-  // Lắng nghe sự kiện click trên nút "Hủy đơn hàng"
-  document.querySelectorAll('.cancel-btn').forEach(item => {
-    item.addEventListener('click', event => {
-      const orderItem = event.target.closest('.order-item');
-      if (orderItem) {
-        const statusText = orderItem.querySelector('.status-text');
-        if (!statusText.textContent.includes('Đã hủy')) {
-          statusText.textContent = 'Đã hủy đơn hàng';
-          statusText.style.color = '#ff5252'; // Màu đỏ cho trạng thái đã hủy
-          item.disabled = true; // Vô hiệu hóa nút "Hủy đơn hàng" sau khi đã hủy
-        }
-      }
-    });
-  });
-
-  // Ẩn nút "Hủy đơn hàng" cho các đơn hàng có trạng thái "Đang giao" và "Đã giao"
-  document.querySelectorAll('.status-text').forEach(statusText => {
-    if (statusText.textContent === 'Đang giao' || statusText.textContent === 'Đã giao hàng') {
-      const cancelBtn = statusText.closest('.order-item').querySelector('.cancel-btn');
-      if (cancelBtn) {
-        cancelBtn.style.display = 'none';
-      }
-    }
-  });
-</script>
 
 </body>
 </html>

@@ -27,7 +27,31 @@
             <p><a href="../backend/Trangchu.php">Trang chủ</a></p><span>&#10230;</span><p>Chính sách điều khoản</p>
         </div>
         
-        <div class="banner-item"> <img src="img/chinhsachdieukhoan.png"></div>
+        <div class="banner-item">
+    <?php
+    // Kết nối tới cơ sở dữ liệu
+    require_once 'ketnoi.php'; // Thay đổi đường dẫn tới file kết nối
+
+    // Câu lệnh truy vấn
+    $mota = 'chinhsachdieukhoan';
+    $sql = "SELECT * FROM anhht WHERE mota = '$mota' LIMIT 1";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+
+    // Hiển thị hình ảnh nếu có
+    if ($row) {
+        echo '<img src="../admin/backend_anh/imgs/' . $row['anhhienthi'] . '" alt="' . $row['mota'] . '">';
+    } else {
+        // Nếu không có hình ảnh phù hợp, hiển thị một hình ảnh mặc định
+       
+    }
+
+    // Giải phóng kết quả và đóng kết nối
+    mysqli_free_result($result);
+   
+    ?>
+</div>
+
         <br>
         <br>
         <br>
