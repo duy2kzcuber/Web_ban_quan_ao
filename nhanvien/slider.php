@@ -165,9 +165,6 @@
                 <a href="/Thoitrang_VHTDT/nhanvien/backend_donhang/Danhsach_dh.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-shopping-cart"></i> Đơn Hàng
                 </a>
-                <a href="#" class="list-group-item list-group-item-action text-white">
-                    <i class="fas fa-users"></i> Khách Hàng
-                </a>
                 <a href="/Thoitrang_VHTDT/nhanvien/dangxuat.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-sign-out-alt"></i> Đăng Xuất
                 </a>
