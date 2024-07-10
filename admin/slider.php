@@ -152,11 +152,11 @@
         <!-- Sidebar -->
         <div class="border-right" id="sidebar-wrapper">
             <div class="sidebar-heading text-white">
-                <img src="../img/logo.png" alt="Logo" style="width:40px;">
+                <img src="/Thoitrang_VHTDT/backend/img/logo.png" alt="Logo" style="width:40px;">
                 Quản Trị Cửa Hàng
             </div>
             <div class="list-group list-group-flush">
-                <a href="/Thoitrang_VHTDT/admin/backend_danhmuc/lietkedanhmuc.php" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/admin/backend_thongke/thongke.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-tachometer-alt"></i> Bảng Điều Khiển
                 </a>
                 <a href="/Thoitrang_VHTDT/admin/backend_sanpham/lietke.php" class="list-group-item list-group-item-action text-white">
@@ -174,11 +174,8 @@
                 <a href="/Thoitrang_VHTDT/admin/backend_quanlykhachhang/oder.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-users"></i> Khách Hàng
                 </a>
-                <a href="/Thoitrang_VHTDT/admin/backend_thongke/thongke.php" class="list-group-item list-group-item-action text-white">
-                    <i class="fas fa-cog"></i> Thống kê
-                </a>
                 <a href="/Thoitrang_VHTDT/admin/backend_tintuc/lietketintuc.php" class="list-group-item list-group-item-action text-white">
-                    <i class="fas fa"></i> Tin tức
+                    <i class="fas fa-solid fa-newspaper"></i> Tin tức
                 </a>
                 <a href="/Thoitrang_VHTDT/DangNhapAdmin.html" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-sign-out-alt"></i> Đăng Xuất

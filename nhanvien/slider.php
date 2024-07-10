@@ -152,7 +152,7 @@
         <!-- Sidebar -->
         <div class="border-right" id="sidebar-wrapper">
             <div class="sidebar-heading text-white">
-                <img src="../img/logo.png" alt="Logo" style="width:40px;">
+                <img src="/Thoitrang_VHTDT/backend/img/logo.png" alt="Logo" style="width:40px;">
                 Nhân viên cửa hàng
             </div>
             <div class="list-group list-group-flush">

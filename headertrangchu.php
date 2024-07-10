@@ -69,9 +69,11 @@ function fetchCategories($conn) {
     </div>
     <div style="margin-right:70px" class="others">
         <ul>
-            <li class="example">
-                <input type="text" placeholder="Tìm kiếm.." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
+        <li class="example">
+            <form method="GET" action="../backend/search.php">
+                    <input type="text" placeholder="Tìm kiếm.." name="tendm">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
             </li>
             <li>
                 <a href="cart.php"><i class="fas fa-shopping-cart"></i></a>

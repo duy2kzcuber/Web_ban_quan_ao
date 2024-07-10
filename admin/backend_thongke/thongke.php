@@ -1,7 +1,7 @@
-<?php
+<?php 
+  include "../slider.php";
 // Kết nối đến cơ sở dữ liệu
 require_once '../ketnoi.php';
-
 // Lấy filter ngày tháng năm từ request (nếu có)
 $filter_date_from = isset($_POST['date_from']) ? $_POST['date_from'] : '';
 $filter_date_to = isset($_POST['date_to']) ? $_POST['date_to'] : '';
