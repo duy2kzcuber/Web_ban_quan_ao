@@ -72,19 +72,6 @@
         </div>
     </form>
     <script>
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
-
-            if (username === 'quanli' && password === '111') {
-                // Redirect to admin page
-                window.location.href = '/Thoitrang_VHTDT/admin/slider.php';
-            } else {
-                // Show error message
-                errorMessage.style.display = 'block';
-            }
-        }
         document.getElementById('login-form').addEventListener('submit', function(event) {
             var emailSdt = document.getElementById('sdt').value.trim();
             var matkhau = document.getElementById('mk').value.trim();
