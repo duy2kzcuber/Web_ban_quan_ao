@@ -177,7 +177,7 @@
                 <a href="/Thoitrang_VHTDT/admin/backend_tintuc/lietketintuc.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-solid fa-newspaper"></i> Tin tức
                 </a>
-                <a href="/Thoitrang_VHTDT/DangNhapAdmin.html" class="list-group-item list-group-item-action text-white">
+                <a href="/Thoitrang_VHTDT/DangNhapAdmin.php" class="list-group-item list-group-item-action text-white">
                     <i class="fas fa-sign-out-alt"></i> Đăng Xuất
                 </a>
 

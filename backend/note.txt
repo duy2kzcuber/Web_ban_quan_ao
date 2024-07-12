@@ -1,0 +1,35 @@
+<a href="sua.php?sid=<?php echo $r['masp']; ?>" class="btn btn-info">Sửa</a>
+    <?php
+    // Lấy masp của sản phẩm
+    $masp = $r['masp'];
+    
+    // Kiểm tra xem sản phẩm có trong bảng orderdetails và có đơn hàng đã giao hàng không
+    $check_sql = "SELECT od.order_id, o.trangthai 
+                  FROM orderdetails od 
+                  INNER JOIN orders o ON od.order_id = o.order_id 
+                  WHERE od.masp = '$masp' AND o.trangthai = 'Đã giao hàng'";
+    $check_result = mysqli_query($conn, $check_sql);
+    
+    // Nếu có đơn hàng đã giao hàng chứa sản phẩm này
+    if (mysqli_num_rows($check_result) > 0) {
+        echo '<button class="btn btn-danger" disabled>Xóa</button>';
+    } else {
+        // Nếu không có đơn hàng đã giao hàng chứa sản phẩm này, hiển thị nút xóa
+        echo '<a onclick="return confirm(\'Bạn có muốn xóa sản phẩm này không?\');" href="xoa.php?sid=' . $r['masp'] . '" class="btn btn-danger">Xóa</a>';
+    }
+    ?>
+
+
+
+
+
+
+    <div class="box">
+    <h2>Thông Tin Khách Hàng</h2>
+    <label for="hoten">Họ tên:</label>
+    <input type="text" id="hoten" name="tenkh" value="<?php echo $tenkh; ?>" placeholder="Nhập họ tên" pattern="[A-Za-z\s]+" title="Tên chỉ được chứa chữ cái và khoảng cách" required>
+    <label for="SDT">Số điện thoại:</label>
+    <input type="text" id="SDT" name="sdt" value="<?php echo $sdt; ?>" placeholder="Nhập số điện thoại" pattern="\d{10}" title="Số điện thoại phải có 10 chữ số" required>
+    <label for="address">Địa chỉ:</label>
+    <textarea id="address" name="dc" placeholder="Nhập địa chỉ" rows="4" required><?php echo $dc; ?></textarea>
+</div>

@@ -126,7 +126,7 @@
     // neu chua dang nhap thi chuyen huong den trang tim kiem theo so dien thoai
     if($_SESSION['loggedin'] == false){
         header("Location: timkiemdonhang.php");
-        exit;
+        exit();
     }
     // Hàm cập nhật trạng thái đơn hàng thành "Đã hủy"
     function cancelOrder($order_id, $conn) {

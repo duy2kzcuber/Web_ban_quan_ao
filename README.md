@@ -1,2 +1,1 @@
-# Webbanquanao
- test
+TRƯỚC KHI CHẠY FILE, PHẢI UPDATE CODE SQL VÀO DATABASE

@@ -28,7 +28,29 @@ function createPassword($s) {
     }
     return $date . $month . $year;
 }
-
+function checkNamSinh($s){
+    $year = "";
+    $cnt = 0;
+    for( $i = 0 ; $i < strlen($s); $i++ ){
+        if($s[$i] == '/'){
+            $cnt++;
+        }
+        if($cnt == 2){
+           $year .= $s[$i];
+        }
+    }
+    $nam = intval($year);
+    if(2024 - $nam >= 18){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+if(!checkNamSinh($ngaysinh)){
+    echo "nhan vien chua du 18 tuoi!";
+    exit();
+}
 $pass = createPassword($ngaysinh);
 echo $pass;
 echo "<br>";

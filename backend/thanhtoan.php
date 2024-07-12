@@ -46,9 +46,10 @@
             $pttt= $_POST['pttt'];
         
             $totalAmount = calculateTotalAmount();
+            
             // Insert đơn hàng vào bảng Orders
             $query_order = "INSERT INTO Orders (user_id, ten_khach_hang, so_dien_thoai, dia_chi, ngay_dat_hang, ngay_nhan_hang,trangthai, pttt, tongtien)
-                            VALUES ('$matk', '$tenkh', '$sdt', '$dc', NOW(), DATE_ADD(NOW(), INTERVAL 3 DAY),'Chờ xác nhận', '$pttt', '$totalAmount')";
+                            VALUES ('$matk', '$tenkh', '$sdt', '$dc', NOW(), DATE_ADD(NOW(), INTERVAL 3 DAY),'Chưa xác nhận', '$pttt', '$totalAmount')";
 
             mysqli_query($conn, $query_order);
             $order_id = mysqli_insert_id($conn);

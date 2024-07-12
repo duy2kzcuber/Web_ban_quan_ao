@@ -105,6 +105,7 @@ if (!$result) {
                 <th>Phương thức TT</th>
                 <th>Tổng tiền</th>
                 <th>Thao tác</th>
+                <th>Tổng tiền đơn hàng </th>
             </tr>
         </thead>
         <tbody>
@@ -168,6 +169,7 @@ if (!$result) {
         </tbody>
     </table>
 
+    
     <!-- Hiển thị phân trang -->
     <nav aria-label="Page navigation">
         <ul class="pagination">

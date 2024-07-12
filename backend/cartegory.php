@@ -126,18 +126,7 @@ $result_products = mysqli_query($conn, $query_products);
                         </div>
                     <?php endwhile; ?>
                 </div>
-                <div class="cartegory-right-bottom">
-                    <div class="cartegory-right-bottom-item">
-                        <ul>
-                            <li><a href="#">&laquo;</a></li>
-                            <li id="products_active_ts"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">&raquo;</a></li>
-                            <li class='last-page'><a href="#">Trang cuối</a></li>
-                        </ul>
-                    </div>
-                </div>
+               
             </div>
         </div>
     </div>

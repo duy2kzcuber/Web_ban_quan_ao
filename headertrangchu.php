@@ -87,7 +87,7 @@ function fetchCategories($conn) {
                     <li><a href="#"><i class="fa-brands fa-rocketchat"></i> Live Chat</a></li>
                     <li><a href="https://www.facebook.com/"><i class="fa-brands fa-signal-messenger"></i> Messenger</a></li>
                     <li><a href="https://mail.google.com/mail/u/0/#inbox"><i class="fa-solid fa-envelope"></i> Email</a></li>
-                    <li><a href="../backend/timkiemdonhang.php"><i class="fa-solid fa-right-to-bracket"></i> Tra cứu đơn hàng</a></li>
+                    <li><a href="../backend/lichsudonhang.php"><i class="fa-solid fa-right-to-bracket"></i> Tra cứu đơn hàng</a></li>
                 </ul>
             </li>
             <li>
